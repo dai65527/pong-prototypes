@@ -234,10 +234,13 @@
         // ボールを移動する
         x += dx;
         y += dy;
+
+        // ブラウザサイドでアニメーションを実行する
+        requestAnimationFrame(draw);
     }
 
-    // 10msごとに描画処理を行う
-    let interval = setInterval(draw, 10);
+    // ゲームの描画
+    draw();
 </script>
 
 </html>
