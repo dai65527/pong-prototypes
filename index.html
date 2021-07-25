@@ -41,6 +41,16 @@
         ctx.fillText(`Score: ${score}`, 8, 20);
     }
 
+    // プレーヤーのライフ
+    let lives = 3;
+
+    // ライフの表示処理
+    const drawLives = () => {
+        ctx.font = "16px Arial";
+        ctx.fillStyle = "#0095DD";
+        ctx.fillText(`Lives: ${lives}`, canvas.width - 65, 20);
+    }
+
     // ボールのの中心座標
     let x = canvas.width / 2;
     let y = canvas.height / 2;
@@ -184,6 +194,7 @@
         collisionDetection();   // 衝突を検出する
         drawBricks();           // ブロックを描画する
         drawScore();            // スコアを描画する
+        drawLives();            // ライフを描画する
 
         // 壁にぶつかっていた場合はボールを反転する
         if (x + dx < ballRadius || x + dx > canvas.width - ballRadius)  {
@@ -198,9 +209,18 @@
             if (x + dx >= paddleX && x + dx <= paddleX + paddleWidth) {
                 dy = -dy;
             } else {
-                alert("Game Over!");
-                document.location.reload();
-                clearInterval(interval);
+                lives--;
+                if (lives == 0) {
+                    alert("Game Over!");
+                    document.location.reload();
+                    clearInterval(interval);
+                } else {
+                    x = canvas.width / 2;
+                    y = canvas.height / 2;
+                    dx = 2;
+                    dy = -2;
+                    paddleX = (canvas.width - paddleWidth) / 2;
+                }
             }
         }
 
