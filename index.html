@@ -31,6 +31,16 @@
     // 2D描画コンテキストは実際にCanvasに描画するために使うツールとなる
     const ctx = canvas.getContext('2d');
 
+    // ゲームのスコア
+    let score = 0;
+
+    // スコアの表示処理
+    const drawScore = () => {
+        ctx.font = "16px Arial";
+        ctx.fillStyle = "#0095DD";
+        ctx.fillText(`Score: ${score}`, 8, 20);
+    }
+
     // ボールのの中心座標
     let x = canvas.width / 2;
     let y = canvas.height / 2;
@@ -144,6 +154,11 @@
                     if (x > b.x && x < b.x + brickWidth && y > b.y && y < b.y + brickHeight) {
                         dy = -dy;
                         b.status = 0;
+                        score++;
+                        if (score == brickRowCount*brickColumnCount) {
+                            alert("You Win!");
+                            document.location.reload();
+                        }
                     }
                 }
             }
@@ -159,6 +174,7 @@
         drawPaddle();           // パドルを描画する
         collisionDetection();   // 衝突を検出する
         drawBricks();           // ブロックを描画する
+        drawScore();            // スコアを描画する
 
         // 壁にぶつかっていた場合はボールを反転する
         if (x + dx < ballRadius || x + dx > canvas.width - ballRadius)  {
