@@ -90,6 +90,46 @@
         ctx.closePath();
     }
 
+    // ブロックの描画パラメータ
+    const brickRowCount = 3;
+    const brickColumnCount = 5;
+    const brickWidth = 75;
+    const brickHeight = 20;
+    const brickPadding = 10;
+    const brickOffsetTop = 30;
+    const brickOffsetLeft = 30;
+
+    // ブロックの情報を格納する2次元配列
+    let bricks = [];
+    for (let c = 0; c < brickColumnCount; c++) {
+        bricks[c] = [];
+        for (let r = 0; r < brickRowCount; r++) {
+            bricks[c][r] = { x: 0, y: 0 };
+        }
+    }
+
+    // ブロックを描画するロジック
+    const drawBricks = () => {
+        for (let c = 0; c < brickColumnCount; c++) {
+            for (let r = 0; r < brickRowCount; r++) {
+                // ブロックの配置
+                let brickX = (c * (brickWidth + brickPadding)) + brickOffsetLeft;
+                let brickY = (r * (brickHeight + brickPadding)) + brickOffsetTop;
+
+                // 配置情報を代入
+                bricks[c][r].x = brickX;
+                bricks[c][r].y = brickY;
+
+                // ブロックを描画
+                ctx.beginPath();
+                ctx.rect(brickX, brickY, brickWidth, brickHeight);
+                ctx.fillStyle = "#0095DD";
+                ctx.fill();
+                ctx.closePath();
+            }
+        }
+    }
+
     // 描画処理
     const draw = () => {
         ctx.clearRect(0, 0, canvas.width, canvas.height); // キャンバスの内容を消去する
@@ -97,13 +137,25 @@
         // 描画
         drawBall();     // ボールを描画する
         drawPaddle();   // パドルを描画する
+        drawBricks();   // ブロックを描画する
 
         // 壁にぶつかっていた場合はボールを反転する
         if (x + dx < ballRadius || x + dx > canvas.width - ballRadius)  {
             dx = -dx;
         }
-        if (y + dy < ballRadius || y + dy >= canvas.height - ballRadius) {
+        if (y + dy < ballRadius) {
             dy = -dy;
+        }
+
+        // ボールが下端に触れた場合はゲームオーバー
+        if (y + dy >= canvas.height - ballRadius) {
+            if (x + dx >= paddleX && x + dx <= paddleX + paddleWidth) {
+                dy = -dy;
+            } else {
+                alert("Game Over!");
+                document.location.reload();
+                clearInterval(interval);
+            }
         }
 
         // パドルを移動する
@@ -119,7 +171,7 @@
     }
 
     // 10msごとに描画処理を行う
-    setInterval(draw, 10);
+    let interval = setInterval(draw, 10);
 </script>
 
 </html>
