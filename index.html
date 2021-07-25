@@ -51,10 +51,52 @@
         ctx.closePath();
     }
 
+    // パドルの描画パラメータ
+    const paddleHeight = 10;
+    const paddleWidth = 75;
+    let paddleX = canvas.width / 2;
+
+    // パドルの移動のためのパラメータ
+    let rightPressed = false;   // 右キーを押しているか
+    let leftPressed = false;    // 左キーを押しているか
+
+    // パドルの移動（キーボード左右）のためのイベントハンドラ
+    const keyDownHandler = e => {
+        if (e.key == "Right" || e.key == "ArrowRight") {
+            rightPressed = true;
+        } else if (e.key == "Left" || e.key == "ArrowLeft") {
+            leftPressed = true;
+        }
+    }
+
+    const keyUpHandler = e => {
+        if (e.key == "Right" || e.key == "ArrowRight") {
+            rightPressed = false;
+        } else if (e.key == "Left" || e.key == "ArrowLeft") {
+            leftPressed = false;
+        }
+    }
+
+    // パドルの移動イベントハンドラの登録
+    document.addEventListener("keydown", keyDownHandler, false);
+    document.addEventListener("keyup", keyUpHandler, false);
+
+    // パドルの描画処理
+    const drawPaddle = () => {
+        ctx.beginPath();
+        ctx.rect(paddleX, canvas.height - paddleHeight, paddleWidth, paddleHeight);
+        ctx.fillStyle = "#0095DD";
+        ctx.fill();
+        ctx.closePath();
+    }
+
     // 描画処理
     const draw = () => {
         ctx.clearRect(0, 0, canvas.width, canvas.height); // キャンバスの内容を消去する
-        drawBall(); // ボールを描画する
+
+        // 描画
+        drawBall();     // ボールを描画する
+        drawPaddle();   // パドルを描画する
 
         // 壁にぶつかっていた場合はボールを反転する
         if (x + dx < ballRadius || x + dx > canvas.width - ballRadius)  {
@@ -62,6 +104,13 @@
         }
         if (y + dy < ballRadius || y + dy >= canvas.height - ballRadius) {
             dy = -dy;
+        }
+
+        // パドルを移動する
+        if (rightPressed && paddleX + paddleWidth < canvas.width) {
+            paddleX += 7;
+        } else if (leftPressed && paddleX > 0) {
+            paddleX -= 7;
         }
 
         // ボールを移動する
