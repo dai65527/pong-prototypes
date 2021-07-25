@@ -31,18 +31,21 @@
     // 2D描画コンテキストは実際にCanvasに描画するために使うツールとなる
     const ctx = canvas.getContext('2d');
 
-    // 円の中心座標
+    // ボールのの中心座標
     let x = canvas.width / 2;
     let y = canvas.height / 2;
 
+    // ボールの半径
+    const ballRadius = 10;
+
     // 1描画あたりの座標の変更幅
-    const dx = 2;
-    const dy = -2;
+    let dx = 2;
+    let dy = -2;
 
     // ボールの描画処理
     const drawBall = () => {
         ctx.beginPath();
-        ctx.arc(x, y, 10, 0, Math.PI*2);  // 座標(x,y)pxに半径10の円を描画
+        ctx.arc(x, y, ballRadius, 0, Math.PI*2);  // 座標(x,y)pxに円を描画
         ctx.fillStyle = "#0095DD";
         ctx.fill();
         ctx.closePath();
@@ -52,6 +55,14 @@
     const draw = () => {
         ctx.clearRect(0, 0, canvas.width, canvas.height); // キャンバスの内容を消去する
         drawBall(); // ボールを描画する
+
+        // 壁にぶつかっていた場合はボールを反転する
+        if (x + dx < ballRadius || x + dx > canvas.width - ballRadius)  {
+            dx = -dx;
+        }
+        if (y + dy < ballRadius || y + dy >= canvas.height - ballRadius) {
+            dy = -dy;
+        }
 
         // ボールを移動する
         x += dx;
