@@ -31,31 +31,35 @@
     // 2D描画コンテキストは実際にCanvasに描画するために使うツールとなる
     const ctx = canvas.getContext('2d');
 
-    // 四角形の描画
-    // 全ての命令はbeginPath()メソッドと closePath()メソッドの間に記述する
-    ctx.beginPath();
-    ctx.rect(20, 40, 50, 50);   // 四角形を描画
-                                // 位置(20px,40px),幅50px,高さ50px
-    ctx.fillStyle = "#FF0000";  // fill()メソッドで用いられる色を指定
-    ctx.fill();                 // 上記の色を塗りつぶす
-    ctx.closePath();            // 描画終了
+    // 円の中心座標
+    let x = canvas.width / 2;
+    let y = canvas.height / 2;
 
-    // 緑色の円を描画
-    ctx.beginPath();
-    ctx.arc(240, 160, 20, 0, Math.PI*2, false); // 縁の描画
-                                                // 中心(240px,160px),半径20px
-                                                // 0radから2πradまで描画
-    ctx.fillStyle = "green";
-    ctx.fill();
-    ctx.closePath();
+    // 1描画あたりの座標の変更幅
+    const dx = 2;
+    const dy = -2;
 
-    // 四角形の縁(ストローク)だけを描画
-    ctx.beginPath();
-    ctx.rect(160, 10, 100, 40);
-    ctx.strokeStyle = "rgba(0, 0, 255, 0.5)";   // ストロークスタイルの指定
-                                                // 0.5は透明度
-    ctx.stroke();                               // ストロークを描画
-    ctx.closePath();
+    // ボールの描画処理
+    const drawBall = () => {
+        ctx.beginPath();
+        ctx.arc(x, y, 10, 0, Math.PI*2);  // 座標(x,y)pxに半径10の円を描画
+        ctx.fillStyle = "#0095DD";
+        ctx.fill();
+        ctx.closePath();
+    }
+
+    // 描画処理
+    const draw = () => {
+        ctx.clearRect(0, 0, canvas.width, canvas.height); // キャンバスの内容を消去する
+        drawBall(); // ボールを描画する
+
+        // ボールを移動する
+        x += dx;
+        y += dy;
+    }
+
+    // 10msごとに描画処理を行う
+    setInterval(draw, 10);
 </script>
 
 </html>
