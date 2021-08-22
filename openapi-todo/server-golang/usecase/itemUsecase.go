@@ -9,6 +9,7 @@ import (
 
 type ItemUsecase interface {
 	FindAll() ([]*model.Item, error)
+	SaveNewItem(item *model.Item) (*model.Item, error)
 }
 
 type itemUsecase struct {
@@ -27,4 +28,12 @@ func (uc *itemUsecase) FindAll() ([]*model.Item, error) {
 		return nil, fmt.Errorf("itemRepository.FindAll: %#v", err)
 	}
 	return items, nil
+}
+
+func (uc *itemUsecase) SaveNewItem(item *model.Item) (*model.Item, error) {
+	item, err := uc.repo.Save(item)
+	if err != nil {
+		return nil, fmt.Errorf("itemRepository.Save: %#v", err)
+	}
+	return item, nil
 }

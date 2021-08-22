@@ -4,4 +4,5 @@ import "github.com/dai65527/pong-prototypes/openapi-todo/server-golang/domain/mo
 
 type ItemRepository interface {
 	FindAll() ([]*model.Item, error)
+	Save(*model.Item) (*model.Item, error)
 }

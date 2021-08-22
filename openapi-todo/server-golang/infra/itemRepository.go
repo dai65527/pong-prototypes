@@ -26,3 +26,11 @@ func (repo itemRepository) FindAll() ([]*model.Item, error) {
 	}
 	return items, nil
 }
+
+func (repo itemRepository) Save(item *model.Item) (*model.Item, error) {
+	err := repo.db.Save(item).Error
+	if err != nil {
+		return nil, fmt.Errorf("gorm.db.Find: %#v", err)
+	}
+	return item, nil
+}
