@@ -52,6 +52,7 @@ func configureAPI(api *operations.TodoAPI) http.Handler {
 	// set handler
 	api.GetItemHandler = operations.GetItemHandlerFunc(todoHandler.GetItem)
 	api.PostItemHandler = operations.PostItemHandlerFunc(todoHandler.PostItem)
+	api.PutItemHandler = operations.PutItemHandlerFunc(todoHandler.PutItem)
 
 	if api.DeleteItemHandler == nil {
 		api.DeleteItemHandler = operations.DeleteItemHandlerFunc(func(params operations.DeleteItemParams) middleware.Responder {
