@@ -6,9 +6,16 @@ package operations
 // Editing this file might prove futile when you re-run the generate command
 
 import (
+	"bytes"
+	"context"
+	"encoding/json"
 	"net/http"
 
+	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime/middleware"
+	"github.com/go-openapi/strfmt"
+	"github.com/go-openapi/swag"
+	"github.com/go-openapi/validate"
 )
 
 // PutItemHandlerFunc turns a function with the right signature into a put item handler
@@ -55,4 +62,145 @@ func (o *PutItem) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	res := o.Handler.Handle(Params) // actually handle the request
 	o.Context.Respond(rw, r, route.Produces, route, res)
 
+}
+
+// PutItemBody put item body
+//
+// swagger:model PutItemBody
+type PutItemBody struct {
+
+	// comment
+	// Required: true
+	Comment *string `json:"comment"`
+
+	// done
+	// Required: true
+	Done *bool `json:"done"`
+
+	// id
+	// Required: true
+	ID *int64 `json:"id"`
+
+	// name
+	// Required: true
+	Name *string `json:"name"`
+}
+
+// UnmarshalJSON unmarshals this object while disallowing additional properties from JSON
+func (o *PutItemBody) UnmarshalJSON(data []byte) error {
+	var props struct {
+
+		// comment
+		// Required: true
+		Comment *string `json:"comment"`
+
+		// done
+		// Required: true
+		Done *bool `json:"done"`
+
+		// id
+		// Required: true
+		ID *int64 `json:"id"`
+
+		// name
+		// Required: true
+		Name *string `json:"name"`
+	}
+
+	dec := json.NewDecoder(bytes.NewReader(data))
+	dec.DisallowUnknownFields()
+	if err := dec.Decode(&props); err != nil {
+		return err
+	}
+
+	o.Comment = props.Comment
+	o.Done = props.Done
+	o.ID = props.ID
+	o.Name = props.Name
+	return nil
+}
+
+// Validate validates this put item body
+func (o *PutItemBody) Validate(formats strfmt.Registry) error {
+	var res []error
+
+	if err := o.validateComment(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := o.validateDone(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := o.validateID(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := o.validateName(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (o *PutItemBody) validateComment(formats strfmt.Registry) error {
+
+	if err := validate.Required("body"+"."+"comment", "body", o.Comment); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (o *PutItemBody) validateDone(formats strfmt.Registry) error {
+
+	if err := validate.Required("body"+"."+"done", "body", o.Done); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (o *PutItemBody) validateID(formats strfmt.Registry) error {
+
+	if err := validate.Required("body"+"."+"id", "body", o.ID); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (o *PutItemBody) validateName(formats strfmt.Registry) error {
+
+	if err := validate.Required("body"+"."+"name", "body", o.Name); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// ContextValidate validates this put item body based on context it is used
+func (o *PutItemBody) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+	return nil
+}
+
+// MarshalBinary interface implementation
+func (o *PutItemBody) MarshalBinary() ([]byte, error) {
+	if o == nil {
+		return nil, nil
+	}
+	return swag.WriteJSON(o)
+}
+
+// UnmarshalBinary interface implementation
+func (o *PutItemBody) UnmarshalBinary(b []byte) error {
+	var res PutItemBody
+	if err := swag.ReadJSON(b, &res); err != nil {
+		return err
+	}
+	*o = res
+	return nil
 }

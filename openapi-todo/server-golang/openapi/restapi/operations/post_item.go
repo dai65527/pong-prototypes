@@ -6,9 +6,16 @@ package operations
 // Editing this file might prove futile when you re-run the generate command
 
 import (
+	"bytes"
+	"context"
+	"encoding/json"
 	"net/http"
 
+	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime/middleware"
+	"github.com/go-openapi/strfmt"
+	"github.com/go-openapi/swag"
+	"github.com/go-openapi/validate"
 )
 
 // PostItemHandlerFunc turns a function with the right signature into a post item handler
@@ -55,4 +62,101 @@ func (o *PostItem) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	res := o.Handler.Handle(Params) // actually handle the request
 	o.Context.Respond(rw, r, route.Produces, route, res)
 
+}
+
+// PostItemBody post item body
+//
+// swagger:model PostItemBody
+type PostItemBody struct {
+
+	// comment
+	// Required: true
+	Comment *string `json:"comment"`
+
+	// name
+	// Required: true
+	Name *string `json:"name"`
+}
+
+// UnmarshalJSON unmarshals this object while disallowing additional properties from JSON
+func (o *PostItemBody) UnmarshalJSON(data []byte) error {
+	var props struct {
+
+		// comment
+		// Required: true
+		Comment *string `json:"comment"`
+
+		// name
+		// Required: true
+		Name *string `json:"name"`
+	}
+
+	dec := json.NewDecoder(bytes.NewReader(data))
+	dec.DisallowUnknownFields()
+	if err := dec.Decode(&props); err != nil {
+		return err
+	}
+
+	o.Comment = props.Comment
+	o.Name = props.Name
+	return nil
+}
+
+// Validate validates this post item body
+func (o *PostItemBody) Validate(formats strfmt.Registry) error {
+	var res []error
+
+	if err := o.validateComment(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := o.validateName(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (o *PostItemBody) validateComment(formats strfmt.Registry) error {
+
+	if err := validate.Required("body"+"."+"comment", "body", o.Comment); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (o *PostItemBody) validateName(formats strfmt.Registry) error {
+
+	if err := validate.Required("body"+"."+"name", "body", o.Name); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// ContextValidate validates this post item body based on context it is used
+func (o *PostItemBody) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+	return nil
+}
+
+// MarshalBinary interface implementation
+func (o *PostItemBody) MarshalBinary() ([]byte, error) {
+	if o == nil {
+		return nil, nil
+	}
+	return swag.WriteJSON(o)
+}
+
+// UnmarshalBinary interface implementation
+func (o *PostItemBody) UnmarshalBinary(b []byte) error {
+	var res PostItemBody
+	if err := swag.ReadJSON(b, &res); err != nil {
+		return err
+	}
+	*o = res
+	return nil
 }

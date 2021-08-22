@@ -33,7 +33,16 @@ paths:
         - in: body
           name: body
           schema:
-            $ref: '#/definitions/Item'
+            type: object
+            properties:
+              name:
+                type: string
+              comment:
+                type: string
+            required:
+              - name
+              - comment
+          description: ''
       description: add a new item
     put:
       summary: update a item
@@ -57,6 +66,25 @@ paths:
             $ref: '#/definitions/Error'
       operationId: put-item
       description: update a item
+      parameters:
+        - in: body
+          name: body
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+              name:
+                type: string
+              comment:
+                type: string
+              done:
+                type: boolean
+            required:
+              - id
+              - name
+              - comment
+              - done
     delete:
       summary: delete done items
       tags: []
@@ -156,9 +184,18 @@ definitions:
         type: integer
       updated_at:
         type: integer
+    required:
+      - id
+      - name
+      - comment
+      - done
+      - created_at
+      - updated_at
   Error:
     title: Error
     type: object
     properties:
       message:
         type: string
+    required:
+      - message

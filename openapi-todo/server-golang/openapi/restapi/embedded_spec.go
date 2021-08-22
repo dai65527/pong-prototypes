@@ -62,6 +62,35 @@ func init() {
         "description": "update a item",
         "summary": "update a item",
         "operationId": "put-item",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "required": [
+                "id",
+                "name",
+                "comment",
+                "done"
+              ],
+              "properties": {
+                "comment": {
+                  "type": "string"
+                },
+                "done": {
+                  "type": "boolean"
+                },
+                "id": {
+                  "type": "integer"
+                },
+                "name": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -98,7 +127,19 @@ func init() {
             "name": "body",
             "in": "body",
             "schema": {
-              "$ref": "#/definitions/Item"
+              "type": "object",
+              "required": [
+                "name",
+                "comment"
+              ],
+              "properties": {
+                "comment": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                }
+              }
             }
           }
         ],
@@ -218,6 +259,9 @@ func init() {
     "Error": {
       "type": "object",
       "title": "Error",
+      "required": [
+        "message"
+      ],
       "properties": {
         "message": {
           "type": "string"
@@ -227,6 +271,14 @@ func init() {
     "Item": {
       "type": "object",
       "title": "Item",
+      "required": [
+        "id",
+        "name",
+        "comment",
+        "done",
+        "created_at",
+        "updated_at"
+      ],
       "properties": {
         "comment": {
           "type": "string"
@@ -295,6 +347,35 @@ func init() {
         "description": "update a item",
         "summary": "update a item",
         "operationId": "put-item",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "required": [
+                "id",
+                "name",
+                "comment",
+                "done"
+              ],
+              "properties": {
+                "comment": {
+                  "type": "string"
+                },
+                "done": {
+                  "type": "boolean"
+                },
+                "id": {
+                  "type": "integer"
+                },
+                "name": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -331,7 +412,19 @@ func init() {
             "name": "body",
             "in": "body",
             "schema": {
-              "$ref": "#/definitions/Item"
+              "type": "object",
+              "required": [
+                "name",
+                "comment"
+              ],
+              "properties": {
+                "comment": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                }
+              }
             }
           }
         ],
@@ -451,6 +544,9 @@ func init() {
     "Error": {
       "type": "object",
       "title": "Error",
+      "required": [
+        "message"
+      ],
       "properties": {
         "message": {
           "type": "string"
@@ -460,6 +556,14 @@ func init() {
     "Item": {
       "type": "object",
       "title": "Item",
+      "required": [
+        "id",
+        "name",
+        "comment",
+        "done",
+        "created_at",
+        "updated_at"
+      ],
       "properties": {
         "comment": {
           "type": "string"

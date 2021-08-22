@@ -10,8 +10,10 @@ import (
 	"context"
 	"encoding/json"
 
+	"github.com/go-openapi/errors"
 	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
+	"github.com/go-openapi/validate"
 )
 
 // Item Item
@@ -20,22 +22,28 @@ import (
 type Item struct {
 
 	// comment
-	Comment string `json:"comment,omitempty"`
+	// Required: true
+	Comment *string `json:"comment"`
 
 	// created at
-	CreatedAt int64 `json:"created_at,omitempty"`
+	// Required: true
+	CreatedAt *int64 `json:"created_at"`
 
 	// done
-	Done bool `json:"done,omitempty"`
+	// Required: true
+	Done *bool `json:"done"`
 
 	// id
-	ID int64 `json:"id,omitempty"`
+	// Required: true
+	ID *int64 `json:"id"`
 
 	// name
-	Name string `json:"name,omitempty"`
+	// Required: true
+	Name *string `json:"name"`
 
 	// updated at
-	UpdatedAt int64 `json:"updated_at,omitempty"`
+	// Required: true
+	UpdatedAt *int64 `json:"updated_at"`
 }
 
 // UnmarshalJSON unmarshals this object while disallowing additional properties from JSON
@@ -43,22 +51,28 @@ func (m *Item) UnmarshalJSON(data []byte) error {
 	var props struct {
 
 		// comment
-		Comment string `json:"comment,omitempty"`
+		// Required: true
+		Comment *string `json:"comment"`
 
 		// created at
-		CreatedAt int64 `json:"created_at,omitempty"`
+		// Required: true
+		CreatedAt *int64 `json:"created_at"`
 
 		// done
-		Done bool `json:"done,omitempty"`
+		// Required: true
+		Done *bool `json:"done"`
 
 		// id
-		ID int64 `json:"id,omitempty"`
+		// Required: true
+		ID *int64 `json:"id"`
 
 		// name
-		Name string `json:"name,omitempty"`
+		// Required: true
+		Name *string `json:"name"`
 
 		// updated at
-		UpdatedAt int64 `json:"updated_at,omitempty"`
+		// Required: true
+		UpdatedAt *int64 `json:"updated_at"`
 	}
 
 	dec := json.NewDecoder(bytes.NewReader(data))
@@ -78,6 +92,89 @@ func (m *Item) UnmarshalJSON(data []byte) error {
 
 // Validate validates this item
 func (m *Item) Validate(formats strfmt.Registry) error {
+	var res []error
+
+	if err := m.validateComment(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateCreatedAt(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateDone(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateID(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateName(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateUpdatedAt(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (m *Item) validateComment(formats strfmt.Registry) error {
+
+	if err := validate.Required("comment", "body", m.Comment); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *Item) validateCreatedAt(formats strfmt.Registry) error {
+
+	if err := validate.Required("created_at", "body", m.CreatedAt); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *Item) validateDone(formats strfmt.Registry) error {
+
+	if err := validate.Required("done", "body", m.Done); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *Item) validateID(formats strfmt.Registry) error {
+
+	if err := validate.Required("id", "body", m.ID); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *Item) validateName(formats strfmt.Registry) error {
+
+	if err := validate.Required("name", "body", m.Name); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *Item) validateUpdatedAt(formats strfmt.Registry) error {
+
+	if err := validate.Required("updated_at", "body", m.UpdatedAt); err != nil {
+		return err
+	}
+
 	return nil
 }
 
