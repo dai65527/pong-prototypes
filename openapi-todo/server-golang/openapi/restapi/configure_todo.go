@@ -10,10 +10,13 @@ import (
 	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/runtime/middleware"
 
+	"github.com/dai65527/pong-prototypes/openapi-todo/server-golang/handler"
+	"github.com/dai65527/pong-prototypes/openapi-todo/server-golang/infra"
 	"github.com/dai65527/pong-prototypes/openapi-todo/server-golang/openapi/restapi/operations"
+	"github.com/dai65527/pong-prototypes/openapi-todo/server-golang/usecase"
 )
 
-//go:generate swagger generate server --target ../../openapi --name Todo --spec ../../../openapi/todo.yaml --principal interface{} --exclude-main
+//go:generate swagger generate server --target ../../openapi --name Todo --spec ../../../openapi/todo.yaml --principal interface{}
 
 func configureFlags(api *operations.TodoAPI) {
 	// api.CommandLineOptionsGroups = []swag.CommandLineOptionsGroup{ ... }
@@ -36,6 +39,18 @@ func configureAPI(api *operations.TodoAPI) http.Handler {
 	api.JSONConsumer = runtime.JSONConsumer()
 
 	api.JSONProducer = runtime.JSONProducer()
+
+	// create new handler
+	db, err := infra.NewSqliteDB()
+	if err != nil {
+		panic(err)
+	}
+	itemRepo := infra.NewItemRepository(db)
+	itemUC := usecase.NewItemUsecase(itemRepo)
+	todoHandler := handler.NewTodoHandler(itemUC, nil)
+
+	// set handler
+	api.GetItemHandler = operations.GetItemHandlerFunc(todoHandler.GetItem)
 
 	if api.DeleteItemHandler == nil {
 		api.DeleteItemHandler = operations.DeleteItemHandlerFunc(func(params operations.DeleteItemParams) middleware.Responder {

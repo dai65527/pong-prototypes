@@ -6,7 +6,9 @@ package models
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
 
 	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
@@ -34,6 +36,44 @@ type Item struct {
 
 	// updated at
 	UpdatedAt int64 `json:"updated_at,omitempty"`
+}
+
+// UnmarshalJSON unmarshals this object while disallowing additional properties from JSON
+func (m *Item) UnmarshalJSON(data []byte) error {
+	var props struct {
+
+		// comment
+		Comment string `json:"comment,omitempty"`
+
+		// created at
+		CreatedAt int64 `json:"created_at,omitempty"`
+
+		// done
+		Done bool `json:"done,omitempty"`
+
+		// id
+		ID int64 `json:"id,omitempty"`
+
+		// name
+		Name string `json:"name,omitempty"`
+
+		// updated at
+		UpdatedAt int64 `json:"updated_at,omitempty"`
+	}
+
+	dec := json.NewDecoder(bytes.NewReader(data))
+	dec.DisallowUnknownFields()
+	if err := dec.Decode(&props); err != nil {
+		return err
+	}
+
+	m.Comment = props.Comment
+	m.CreatedAt = props.CreatedAt
+	m.Done = props.Done
+	m.ID = props.ID
+	m.Name = props.Name
+	m.UpdatedAt = props.UpdatedAt
+	return nil
 }
 
 // Validate validates this item
