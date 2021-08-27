@@ -2,8 +2,10 @@ package handler
 
 import (
 	"errors"
+	"fmt"
 	"log"
 	"os"
+	"strconv"
 
 	"github.com/dai65527/pong-prototypes/openapi-todo/server-golang/domain/model"
 	"github.com/dai65527/pong-prototypes/openapi-todo/server-golang/openapi/models"
@@ -14,10 +16,15 @@ import (
 )
 
 type TodoHandler interface {
+	// /item
 	GetItem(operations.GetItemParams) middleware.Responder
 	PostItem(operations.PostItemParams) middleware.Responder
 	PutItem(operations.PutItemParams) middleware.Responder
 	DeleteItem(operations.DeleteItemParams) middleware.Responder
+
+	// /item/{itemId}
+	GetItemItemId(operations.GetItemItemIDParams) middleware.Responder
+	DeleteItemItemId(operations.DeleteItemItemIDParams) middleware.Responder
 }
 
 type todoHandler struct {
@@ -44,6 +51,22 @@ func (h *todoHandler) GetItem(params operations.GetItemParams) middleware.Respon
 
 	payload := itemsToPayload(items)
 	return operations.NewGetItemOK().WithPayload(payload)
+}
+
+func (h *todoHandler) GetItemItemId(params operations.GetItemItemIDParams) middleware.Responder {
+	itemId, err := strconv.ParseInt(params.ItemID, 10, 64)
+	if err != nil {
+		msg := fmt.Sprintf("invalid request: itemId = %s", params.ItemID)
+		h.l.Printf(msg)
+		return operations.NewGetItemItemIDBadRequest().WithPayload(&models.Error{Message: &msg})
+	}
+
+	item, err := h.itemUC.FindById(itemId)
+	if err != nil {
+		h.l.Printf("todoHandler.GetItemItemId: itemUC.GetItemItemId: %v", err)
+		return operations.NewGetItemItemIDInternalServerError().WithPayload(&models.Error{Message: swag.String("internal server error")})
+	}
+	return operations.NewGetItemItemIDOK().WithPayload(itemToPayload(item))
 }
 
 func (h *todoHandler) PostItem(params operations.PostItemParams) middleware.Responder {
@@ -77,6 +100,22 @@ func (h *todoHandler) DeleteItem(params operations.DeleteItemParams) middleware.
 		return operations.NewDeleteItemInternalServerError().WithPayload(&models.Error{Message: swag.String("internal server error")})
 	}
 	return operations.NewDeleteItemOK()
+}
+
+func (h *todoHandler) DeleteItemItemId(params operations.DeleteItemItemIDParams) middleware.Responder {
+	itemId, err := strconv.ParseInt(params.ItemID, 10, 64)
+	if err != nil {
+		msg := fmt.Sprintf("invalid request: itemId = %s", params.ItemID)
+		h.l.Printf(msg)
+		return operations.NewDeleteItemItemIDBadRequest().WithPayload(&models.Error{Message: &msg})
+	}
+
+	err = h.itemUC.DeleteById(itemId)
+	if err != nil {
+		h.l.Printf("todoHandler.DeleteItemItemId: itemUC.DeleteById: %v", err)
+		return operations.NewDeleteItemItemIDInternalServerError().WithPayload(&models.Error{Message: swag.String("internal server error")})
+	}
+	return operations.NewGetItemItemIDOK()
 }
 
 // itemsToPayload converts *model.Item to *models.Item

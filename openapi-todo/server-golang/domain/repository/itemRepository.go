@@ -6,5 +6,6 @@ type ItemRepository interface {
 	FindAll() ([]*model.Item, error)
 	FindById(id int64) (*model.Item, error)
 	Save(*model.Item) (*model.Item, error)
+	DeleteById(id int64) error
 	DeleteDone() error
 }

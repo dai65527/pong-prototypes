@@ -44,6 +44,14 @@ func (repo *itemRepository) Save(item *model.Item) (*model.Item, error) {
 	return item, nil
 }
 
+func (repo *itemRepository) DeleteById(id int64) error {
+	err := repo.db.Delete(&model.Item{}, id).Error
+	if err != nil {
+		return fmt.Errorf("gorm.db.Delete: %w", err)
+	}
+	return nil
+}
+
 func (repo *itemRepository) DeleteDone() error {
 	err := repo.db.Where("done = ?", true).Delete(model.Item{}).Error
 	if err != nil {

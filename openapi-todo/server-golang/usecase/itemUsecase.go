@@ -15,8 +15,10 @@ var (
 
 type ItemUsecase interface {
 	FindAll() ([]*model.Item, error)
+	FindById(id int64) (*model.Item, error)
 	SaveNewItem(*model.Item) (*model.Item, error)
 	UpdateItem(*model.Item) (*model.Item, error)
+	DeleteById(id int64) error
 	DeleteDoneItem() error
 }
 
@@ -36,6 +38,14 @@ func (uc *itemUsecase) FindAll() ([]*model.Item, error) {
 		return nil, fmt.Errorf("itemRepository.FindAll: %w", err)
 	}
 	return items, nil
+}
+
+func (uc *itemUsecase) FindById(id int64) (*model.Item, error) {
+	item, err := uc.repo.FindById(id)
+	if err != nil {
+		return nil, fmt.Errorf("itemRepository.FindById")
+	}
+	return item, nil
 }
 
 func (uc *itemUsecase) SaveNewItem(item *model.Item) (*model.Item, error) {
@@ -61,6 +71,14 @@ func (uc *itemUsecase) UpdateItem(item *model.Item) (*model.Item, error) {
 	}
 
 	return item, nil
+}
+
+func (uc *itemUsecase) DeleteById(id int64) error {
+	err := uc.repo.DeleteById(id)
+	if err != nil {
+		return fmt.Errorf("itemRepository.DeleteById: %w", err)
+	}
+	return nil
 }
 
 func (uc *itemUsecase) DeleteDoneItem() error {
