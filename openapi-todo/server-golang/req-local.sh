@@ -22,7 +22,14 @@ curl -XDELETE localhost:4000/item
 # show all items
 curl localhost:4000/item | jq
 
+# delete item by id
+curl localhost
+
 # get item by id
 curl localhost:4000/item/1 | jq
 
-# delete item by id
+# delete done items
+curl -XDELETE localhost:4000/item
+
+# show all items
+curl localhost:4000/item | jq
