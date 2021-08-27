@@ -17,6 +17,7 @@ type ItemUsecase interface {
 	FindAll() ([]*model.Item, error)
 	SaveNewItem(*model.Item) (*model.Item, error)
 	UpdateItem(*model.Item) (*model.Item, error)
+	DeleteDoneItem() error
 }
 
 type itemUsecase struct {
@@ -60,4 +61,12 @@ func (uc *itemUsecase) UpdateItem(item *model.Item) (*model.Item, error) {
 	}
 
 	return item, nil
+}
+
+func (uc *itemUsecase) DeleteDoneItem() error {
+	err := uc.repo.DeleteDone()
+	if err != nil {
+		return fmt.Errorf("itemRepository.DeleteDone: %w", err)
+	}
+	return nil
 }

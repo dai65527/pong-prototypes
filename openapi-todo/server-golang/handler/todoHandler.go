@@ -4,7 +4,6 @@ import (
 	"errors"
 	"log"
 	"os"
-	"time"
 
 	"github.com/dai65527/pong-prototypes/openapi-todo/server-golang/domain/model"
 	"github.com/dai65527/pong-prototypes/openapi-todo/server-golang/openapi/models"
@@ -18,6 +17,7 @@ type TodoHandler interface {
 	GetItem(operations.GetItemParams) middleware.Responder
 	PostItem(operations.PostItemParams) middleware.Responder
 	PutItem(operations.PutItemParams) middleware.Responder
+	DeleteItem(operations.DeleteItemParams) middleware.Responder
 }
 
 type todoHandler struct {
@@ -38,7 +38,7 @@ func NewTodoHandler(itemUC usecase.ItemUsecase, l *log.Logger) TodoHandler {
 func (h *todoHandler) GetItem(params operations.GetItemParams) middleware.Responder {
 	items, err := h.itemUC.FindAll()
 	if err != nil {
-		h.l.Printf("todoHandler.GetItem.itemUc.FindAll: %v", err)
+		h.l.Printf("todoHandler.GetItem: itemUC.FindAll: %v", err)
 		return operations.NewGetItemInternalServerError().WithPayload(&models.Error{Message: swag.String("internal server error")})
 	}
 
@@ -50,8 +50,8 @@ func (h *todoHandler) PostItem(params operations.PostItemParams) middleware.Resp
 	item := newItemFromPostItemBody(&params.Body)
 	item, err := h.itemUC.SaveNewItem(item)
 	if err != nil {
-		h.l.Printf("todoHandler.GetItem.itemUc.SaveNewItem: %v", err)
-		return operations.NewGetItemInternalServerError().WithPayload(&models.Error{Message: swag.String("internal server error")})
+		h.l.Printf("todoHandler.PostItem: itemUC.SaveNewItem: %v", err)
+		return operations.NewPostItemInternalServerError().WithPayload(&models.Error{Message: swag.String("internal server error")})
 	}
 	return operations.NewPostItemCreated().WithPayload(itemToPayload(item))
 }
@@ -63,11 +63,20 @@ func (h *todoHandler) PutItem(params operations.PutItemParams) middleware.Respon
 		h.l.Printf("no item found")
 		return operations.NewPutItemNotFound().WithPayload(&models.Error{Message: swag.String("no item found")})
 	} else if err != nil {
-		h.l.Printf("todoHandler.GetItem.itemUC.SaveNewItem: %v", err)
-		return operations.NewGetItemInternalServerError().WithPayload(&models.Error{Message: swag.String("internal server error")})
+		h.l.Printf("todoHandler.PutItem: itemUC.UpdateItem: %v", err)
+		return operations.NewPutItemInternalServerError().WithPayload(&models.Error{Message: swag.String("internal server error")})
 	}
 
 	return operations.NewPutItemOK().WithPayload(itemToPayload(item))
+}
+
+func (h *todoHandler) DeleteItem(params operations.DeleteItemParams) middleware.Responder {
+	err := h.itemUC.DeleteDoneItem()
+	if err != nil {
+		h.l.Printf("todoHandler.DeleteItem: itemUC.DeleteDoneItem: %v", err)
+		return operations.NewDeleteItemInternalServerError().WithPayload(&models.Error{Message: swag.String("internal server error")})
+	}
+	return operations.NewDeleteItemOK()
 }
 
 // itemsToPayload converts *model.Item to *models.Item
@@ -116,27 +125,5 @@ func newItemFromPutItemBody(body *operations.PutItemBody) *model.Item {
 		Name:    swag.StringValue(body.Name),
 		Comment: swag.StringValue(body.Comment),
 		Done:    swag.BoolValue(body.Done),
-	}
-}
-
-// newItem converts *models.Item to *model.Item
-func newItemFromBody(item *models.Item) *model.Item {
-	var createdAt *time.Time
-	if item.CreatedAt != nil {
-		createdAt = swag.Time(time.Unix(*item.CreatedAt, 0))
-	}
-
-	var updatedAt *time.Time
-	if item.CreatedAt != nil {
-		updatedAt = swag.Time(time.Unix(*item.CreatedAt, 0))
-	}
-
-	return &model.Item{
-		Id:        swag.Int64Value(item.ID),
-		Name:      swag.StringValue(item.Name),
-		Comment:   swag.StringValue(item.Comment),
-		Done:      swag.BoolValue(item.Done),
-		CreatedAt: createdAt,
-		UpdatedAt: updatedAt,
 	}
 }
