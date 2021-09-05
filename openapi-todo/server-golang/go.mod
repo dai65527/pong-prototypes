@@ -11,6 +11,7 @@ require (
 	github.com/go-openapi/swag v0.19.15
 	github.com/go-openapi/validate v0.20.2
 	github.com/jessevdk/go-flags v1.5.0
+	github.com/rs/cors v1.8.0 // indirect
 	golang.org/x/net v0.0.0-20210813160813-60bc85c4be6d
 	gorm.io/driver/sqlite v1.1.4
 	gorm.io/gorm v1.21.13
