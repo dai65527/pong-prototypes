@@ -7,9 +7,11 @@ import Todo from "./pages/Todo";
 import NotFound from "./pages/NotFound";
 import { TodoService } from "./modules/service/TodoService";
 import TodoMemoryRepository from "./modules/infra/TodoMemoryRepository";
+import TodoAPIRepository from "./modules/infra/TodoApiRepository";
 
 export const todoServiceContext = React.createContext<TodoService>(
-  new TodoService(new TodoMemoryRepository())
+  // new TodoService(new TodoMemoryRepository())
+  new TodoService(new TodoAPIRepository("http://localhost", 4000))
 );
 
 function App() {
