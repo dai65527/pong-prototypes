@@ -1,0 +1,201 @@
+swagger: '2.0'
+info:
+  title: todo
+  version: '1.0'
+  contact: {}
+host: 'localhost:3000'
+schemes:
+  - http
+produces:
+  - application/json
+consumes:
+  - application/json
+paths:
+  /item:
+    post:
+      summary: add a item
+      tags: []
+      responses:
+        '201':
+          description: Created
+          schema:
+            $ref: '#/definitions/Item'
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/Error'
+      operationId: post-item
+      parameters:
+        - in: body
+          name: body
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+              comment:
+                type: string
+            required:
+              - name
+              - comment
+          description: ''
+      description: add a new item
+    put:
+      summary: update a item
+      tags: []
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Item'
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Error'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/Error'
+      operationId: put-item
+      description: update a item
+      parameters:
+        - in: body
+          name: body
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+              name:
+                type: string
+              comment:
+                type: string
+              done:
+                type: boolean
+            required:
+              - id
+              - name
+              - comment
+              - done
+    delete:
+      summary: delete done items
+      tags: []
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: object
+            properties: {}
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/Error'
+      operationId: delete-item
+      description: delete done items
+      parameters: []
+    get:
+      summary: get all items
+      tags: []
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Item'
+          examples: {}
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/Error'
+      operationId: get-item
+      description: get all items
+  '/item/{itemId}':
+    parameters:
+      - type: string
+        name: itemId
+        in: path
+        required: true
+    get:
+      summary: get item data
+      tags: []
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Item'
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Error'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/Error'
+      operationId: get-item-itemId
+    delete:
+      summary: delete a item
+      tags: []
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: object
+            properties: {}
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Error'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/Error'
+      operationId: delete-item-itemId
+definitions:
+  Item:
+    title: Item
+    type: object
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+      comment:
+        type: string
+      done:
+        type: boolean
+      created_at:
+        type: integer
+      updated_at:
+        type: integer
+    required:
+      - id
+      - name
+      - comment
+      - done
+      - created_at
+      - updated_at
+  Error:
+    title: Error
+    type: object
+    properties:
+      message:
+        type: string
+    required:
+      - message
