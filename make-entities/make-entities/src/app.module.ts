@@ -3,6 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { getConnectionOptions } from 'typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { Photo } from './entities/photo.entity';
 import { User } from './entities/user.entity';
 import { UsersModule } from './users/users.module';
 
@@ -13,7 +14,7 @@ import { UsersModule } from './users/users.module';
       useFactory: async () =>
         Object.assign(await getConnectionOptions(), {
           autoLoadEntities: true,
-          entities: [User], // いらない?
+          entities: [User, Photo], // いらない?
         }),
     }),
     UsersModule,

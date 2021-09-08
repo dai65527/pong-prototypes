@@ -5,7 +5,7 @@
   "username": "postgres",
   "password": "postgres",
   "database": "pong",
-  "entities": ["dist/**/*.entity.js"],
+  "entities": ["dist/entities/**/*.entity.js"],
   "migrations": ["dist/migrations/**/*.js"],
   "logging": true,
   "synchronize": false
