@@ -11,5 +11,6 @@ export class UsersService {
 
   async findAll(): Promise<User[]> {
     return await this.userRepository.find({ relations: ['photos'] });
+    // return await this.userRepository.find();
   }
 }
