@@ -55,6 +55,10 @@
     "typescript": "^4.3.5"
   },
   "jest": {
+    "moduleDirectories": [
+      "node_modules",
+      "src"
+    ],
     "moduleFileExtensions": [
       "js",
       "json",
@@ -69,6 +73,9 @@
       "**/*.(t|j)s"
     ],
     "coverageDirectory": "../coverage",
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "moduleNameMapper": {
+      "src/(.*)$": "<rootDir>/$1"
+    }
   }
 }
