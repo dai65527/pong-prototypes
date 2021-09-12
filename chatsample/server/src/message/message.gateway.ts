@@ -8,6 +8,14 @@ import {
   WebSocketGateway,
   WebSocketServer,
 } from "@nestjs/websockets";
+import {
+  AllMessageToClientPayload,
+  NewMessageToClientPayload,
+  ALL_MESSAGE_TO_CLIENT,
+  NEW_MESSAGE_TO_CLIENT,
+  NEW_MESSAGE_TO_SERVER,
+  NewMessageToServerPayload,
+} from "@shared/chat/chat";
 import { Server } from "http";
 import { MessageService } from "./message.service";
 
@@ -27,8 +35,12 @@ export class MessageGateway
   public async handleConnection(client: any, ...args: any[]) {
     this.count += 1;
     this.logger.log(`Connected: ${this.count} connections`);
+    this.logger.log(`Connected: ${this.count} connections`);
     const messages = await this.messageService.getAll();
-    client.emit("all-messages-to-client", messages);
+    const payload: AllMessageToClientPayload = {
+      messages: messages,
+    };
+    client.emit(ALL_MESSAGE_TO_CLIENT, payload);
   }
 
   public async handleDisconnect(client: any) {
@@ -40,14 +52,18 @@ export class MessageGateway
     this.logger.log("MessageGateway Initialized");
   }
 
-  @SubscribeMessage("new-message-to-server")
+  @SubscribeMessage(NEW_MESSAGE_TO_SERVER)
   public async handleNewMessage(
-    @MessageBody() data: { sender: string; message: string },
+    @MessageBody() data: NewMessageToServerPayload,
   ): Promise<void> {
     const message = await this.messageService.createMessage(
-      data.sender,
-      data.message,
+      data.message.sender,
+      data.message.message,
     );
-    this.wss.emit("new-message-to-client", { message });
+
+    const payload: NewMessageToClientPayload = {
+      message: message,
+    };
+    this.wss.emit(NEW_MESSAGE_TO_CLIENT, payload);
   }
 }

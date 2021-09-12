@@ -12,9 +12,7 @@ export const chatServiceContext = React.createContext<ChatService>(undefined!);
 let chatService: ChatService
 
 const ChatApp: React.FC = () => {
-  const [chatData, dispatch] = React.useReducer(chatReducer, {
-    chats: [],
-  });
+  const [chatData, dispatch] = React.useReducer(chatReducer, new ChatData([]));
 
   if (!chatService) {
     // chatService = new ChatMockService(dispatch);

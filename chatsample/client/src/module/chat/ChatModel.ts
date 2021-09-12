@@ -1,13 +1,16 @@
-export type Chat = {
-  sender: string;
-  message: string;
-};
+import { IMessage } from "../../shared/chat/chat";
 
-export type ChatData = {
-  chats: Chat[];
+export class Message implements IMessage {
+  constructor(
+    readonly sender: string,
+    readonly message: string,
+    readonly Date?: Date,
+    readonly id?: number,
+  ) {}
 }
 
-export type ChatServerData = {
-  id: number;
-  date: Date;
-} & Chat;
+export class ChatData {
+  constructor(
+    readonly messages: Message[],
+  ) {}
+};

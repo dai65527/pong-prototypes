@@ -1,7 +1,9 @@
 import { BaseEntity, PrimaryGeneratedColumn, Entity, Column } from "typeorm";
+import { IMessage } from "@shared/chat/chat";
 
 @Entity()
-export class Message extends BaseEntity {
+// export class Message extends BaseEntity implements IMessage {
+export class Message extends BaseEntity implements IMessage {
   constructor(sender: string, message: string) {
     super();
     this.sender = sender;

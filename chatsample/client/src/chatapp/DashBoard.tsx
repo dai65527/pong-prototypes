@@ -14,8 +14,8 @@ const DashBoard: React.FC = () => {
       <h1>Chat</h1>
       <h2>Hello, {name}!</h2>
       <div>
-        {chatData.chats.map((chat, i) => {
-          return <p key={i}>{`${chat.sender}: ${chat.message}`}</p>;
+        {chatData.messages.map((message, i) => {
+          return <p key={i}>{`${message.sender}: ${message.message}`}</p>;
         })}
       </div>
       <div>
