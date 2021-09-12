@@ -19,7 +19,10 @@ import {
 import { Server } from "http";
 import { MessageService } from "./message.service";
 
-@WebSocketGateway(4000, { namespace: "message", cors: true })
+@WebSocketGateway(parseInt(`${process.env.WEBSOCKET_PORT}`), {
+  namespace: "message",
+  cors: true,
+})
 export class MessageGateway
   implements OnGatewayConnection, OnGatewayDisconnect, OnGatewayInit
 {
@@ -34,7 +37,6 @@ export class MessageGateway
 
   public async handleConnection(client: any, ...args: any[]) {
     this.count += 1;
-    this.logger.log(`Connected: ${this.count} connections`);
     this.logger.log(`Connected: ${this.count} connections`);
     const messages = await this.messageService.getAll();
     const payload: AllMessageToClientPayload = {

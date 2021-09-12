@@ -3,6 +3,7 @@ import { ChatData } from "../module/chat/ChatModel";
 import ChatService, {
   chatReducer,
   ChatSocketioService,
+  // ChatMockService,
 } from "../module/chat/ChatService";
 import DashBoard from "./DashBoard";
 
@@ -15,8 +16,8 @@ const ChatApp: React.FC = () => {
   const [chatData, dispatch] = React.useReducer(chatReducer, new ChatData([]));
 
   if (!chatService) {
-    // chatService = new ChatMockService(dispatch);
     chatService = new ChatSocketioService(dispatch);
+    // chatService = new ChatMockService(dispatch);
   } else {
     chatService.dispatch = dispatch;
   }
