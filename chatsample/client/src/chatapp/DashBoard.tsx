@@ -15,7 +15,7 @@ const DashBoard: React.FC = () => {
       <h2>Hello, {name}!</h2>
       <div>
         {chatData.chats.map((chat, i) => {
-          return <p key={i}>{`${chat.from}: ${chat.msg}`}</p>;
+          return <p key={i}>{`${chat.sender}: ${chat.message}`}</p>;
         })}
       </div>
       <div>
@@ -28,7 +28,7 @@ const DashBoard: React.FC = () => {
         />
         <button
           onClick={() => {
-            chatService.sendNewMessage({ from: name, msg: msg });
+            chatService.sendNewMessage({ sender: name, message: msg });
             updateMsg("");
           }}
         >

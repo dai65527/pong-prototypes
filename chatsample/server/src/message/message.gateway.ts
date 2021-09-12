@@ -24,7 +24,7 @@ export class MessageGateway
   private logger = new Logger("MessageGateway");
   private count = 0;
 
-  async handleConnection(client: any, ...args: any[]) {
+  public async handleConnection(client: any, ...args: any[]) {
     this.count += 1;
     this.logger.log(`Connected: ${this.count} connections`);
     const messages = await this.messageService.getAll();
@@ -32,13 +32,11 @@ export class MessageGateway
   }
 
   public async handleDisconnect(client: any) {
-    this.count += 1;
+    this.count -= 1;
     this.logger.log(`Disconnected: ${this.count} connections`);
-    const messages = await this.messageService.getAll();
-    client.emit("all-messages-to-client", messages);
   }
 
-  afterInit(server: any) {
+  public async afterInit(server: any) {
     this.logger.log("MessageGateway Initialized");
   }
 
