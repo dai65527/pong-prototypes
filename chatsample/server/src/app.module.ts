@@ -8,9 +8,6 @@ import { MessageModule } from "./message/message.module";
   imports: [
     ConfigModule.forRoot({ envFilePath: ".env" }),
     TypeOrmModule.forRoot(),
-    ServeStaticModule.forRoot({
-      rootPath: `${process.cwd()}/public`,
-    }),
     MessageModule,
   ],
   controllers: [],
