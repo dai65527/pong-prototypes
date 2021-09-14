@@ -1,6 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken, TypeOrmModule } from '@nestjs/typeorm';
+import { Photo } from 'src/entities/photo.entity';
 import { User } from 'src/entities/user.entity';
+import { Connection, createConnection, getConnection } from 'typeorm';
 import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
 
@@ -35,10 +37,27 @@ describe('UsersController', () => {
       },
     };
 
+    const connection = await createConnection({
+      type: 'postgres',
+      host: 'localhost',
+      port: 5432,
+      username: 'postgres',
+      password: 'postgres',
+      database: 'pong',
+      entities: [User, Photo],
+      logging: true,
+      synchronize: false,
+    });
+
     module = await Test.createTestingModule({
       controllers: [UsersController],
-      providers: [UsersService, MockRepository],
+      // providers: [UsersService, MockRepository],
+      providers: [UsersService],
     }).compile();
+  });
+
+  afterEach(async () => {
+    await getConnection().close();
   });
 
   describe('/users', () => {
