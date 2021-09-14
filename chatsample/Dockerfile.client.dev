@@ -3,10 +3,10 @@ FROM node:lts-buster
 
 WORKDIR /app
 
-RUN npm install -g create-react-app
+RUN npm install -g react-scripts
 
-ADD server/package*.json ./server/
-RUN cd server && npm ci
+ADD client/package*.json ./client/
+RUN cd client && npm ci
 
 ADD client ./client
 

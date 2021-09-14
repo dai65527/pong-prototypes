@@ -8,7 +8,7 @@ RUN npm install -g @nestjs/cli
 ADD server/package*.json ./server/
 RUN cd server && npm ci
 
-ADD server ./server
+ADD server /app/server
 ADD client/src/shared client/src/shared/
 
 WORKDIR /app/server
