@@ -7,6 +7,9 @@
   "database": "pong",
   "entities": ["dist/entities/**/*.entity.js", "D:/42/ft_transcendence/github/pong-prototypes/make-entities/make-entities/dist/entities/**/*.entity.js"],
   "migrations": ["dist/migrations/**/*.js"],
-  "logging": true,
-  "synchronize": false
+  "logging": "all",
+  "synchronize": false,
+  "cli": {
+    "entitiesDir": "src/entities"
+  }
 }

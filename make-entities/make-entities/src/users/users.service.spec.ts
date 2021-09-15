@@ -7,6 +7,7 @@ import { getRepositoryToken, TypeOrmModule } from '@nestjs/typeorm';
 import {
   Connection,
   createConnection,
+  EntityNotFoundError,
   getConnection,
   getConnectionOptions,
   getRepository,
@@ -58,7 +59,20 @@ describe('UsersService', () => {
     // console.log(actual);
     expect(service).toBeDefined();
     // expect(await service.getAllItems()).toHaveLength(1);
-    connection.getRepository(User);
+    const userRepository = connection.getRepository(User);
+    // console.log(userRepository.metadata);
     expect(await service.findAll()).toHaveLength(1);
+    console.log(await service.findOne());
+    try {
+      console.log(await service.findOneOrFail());
+    } catch (error) {
+      if (error instanceof EntityNotFoundError) {
+        console.log('EntityNotFoundError');
+      } else {
+        console.log(error);
+      }
+    }
+    console.log(JSON.stringify(await service.findAll(), null, '  '));
+    console.log(JSON.stringify(await service.find(), null, '  '));
   });
 });

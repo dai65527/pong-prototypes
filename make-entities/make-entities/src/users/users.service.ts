@@ -23,6 +23,18 @@ export class UsersService {
   //   return await this.userRepository.find();
   // }
 
+  async find(): Promise<User[]> {
+    return await getManager().find(User, { relations: ['photos'] });
+  }
+
+  async findOne(): Promise<User> {
+    return await getManager().findOne(User, 3);
+  }
+
+  async findOneOrFail(): Promise<User> {
+    return await getManager().findOneOrFail(User, 3);
+  }
+
   async findAll(): Promise<User[]> {
     return await getConnection()
       .getRepository(User)
