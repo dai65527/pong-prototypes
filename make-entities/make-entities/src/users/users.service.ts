@@ -1,15 +1,15 @@
-import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Photo } from 'src/entities/photo.entity';
-import { User } from 'src/entities/user.entity';
-import { getConnection, getManager, Repository } from 'typeorm';
+import { Injectable } from "@nestjs/common";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Photo } from "src/entities/photo.entity";
+import { User } from "src/entities/user.entity";
+import { getConnection, getManager, Repository } from "typeorm";
 
 const items = [
   {
     id: 1,
-    title: 'Item title',
-    body: 'Hello, World',
-    deletePassword: '1234',
+    title: "Item title",
+    body: "Hello, World",
+    deletePassword: "1234",
   },
 ];
 
@@ -24,7 +24,7 @@ export class UsersService {
   // }
 
   async find(): Promise<User[]> {
-    return await getManager().find(User, { relations: ['photos'] });
+    return await getManager().find(User, { relations: ["photos"] });
   }
 
   async findOne(): Promise<User> {
@@ -38,7 +38,7 @@ export class UsersService {
   async findAll(): Promise<User[]> {
     return await getConnection()
       .getRepository(User)
-      .find({ relations: ['photos'] });
+      .find({ relations: ["photos"] });
   }
 
   async getAllItems(): Promise<any> {
