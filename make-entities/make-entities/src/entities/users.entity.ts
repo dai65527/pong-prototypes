@@ -46,10 +46,10 @@ export class Users {
   @Column({ nullable: true })
   avatar: string;
 
-  @OneToMany(() => Invites, (invite) => invite.user_from)
+  @OneToMany(() => Invites, (invite) => invite.user_from_id)
   invites_from: Invites[];
 
-  @OneToMany(() => Invites, (invite) => invite.user_to)
+  @OneToMany(() => Invites, (invite) => invite.user_to_id)
   invites_to: Invites[];
 
   @CreateDateColumn()

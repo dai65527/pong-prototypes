@@ -5,21 +5,25 @@ import {
   PrimaryColumn,
   PrimaryGeneratedColumn,
   Index,
+  JoinColumn,
 } from "typeorm";
 import { IsDate } from "class-validator";
 import { Users } from "./users.entity";
 
 @Entity()
-@Index(["user_from", "user_to"], { unique: true })
 export class Invites {
-  @PrimaryGeneratedColumn()
-  id: number;
+  // @PrimaryGeneratedColumn()
+  // id: number;
 
-  @ManyToOne(() => Users, (user) => user.invites_from)
-  user_from: Users;
+  @ManyToOne(() => Users, (user) => user.id)
+  @JoinColumn({ name: "user_from_id" })
+  @PrimaryColumn()
+  user_from_id: number;
 
-  @ManyToOne(() => Users, (user) => user.invites_to)
-  user_to: Users;
+  @ManyToOne(() => Users, (user) => user.id)
+  @JoinColumn({ name: "user_to_id" })
+  @PrimaryColumn()
+  user_to_id: number;
 
   @CreateDateColumn()
   @IsDate()
