@@ -7,8 +7,10 @@ import {
   UpdateDateColumn,
   Check,
   Index,
+  JoinColumn,
 } from "typeorm";
 import { IsDate, IsEmail, Min } from "class-validator";
+import { Invites } from "./Invites.entity";
 
 @Entity()
 @Check(`"rate" >= 0`)
@@ -43,6 +45,12 @@ export class Users {
 
   @Column({ nullable: true })
   avatar: string;
+
+  @OneToMany(() => Invites, (invite) => invite.user_from)
+  invites_from: Invites[];
+
+  @OneToMany(() => Invites, (invite) => invite.user_to)
+  invites_to: Invites[];
 
   @CreateDateColumn()
   @IsDate()

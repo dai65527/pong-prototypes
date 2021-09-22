@@ -1,7 +1,7 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from "typeorm";
 import { Photo } from "./photo.entity";
 
-@Entity()
+@Entity({ schema: "public" })
 export class User {
   @PrimaryGeneratedColumn()
   id: number;
