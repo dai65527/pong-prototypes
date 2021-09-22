@@ -1,11 +1,12 @@
-import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { Connection, getConnectionOptions } from 'typeorm';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { Module } from "@nestjs/common";
+import { TypeOrmModule } from "@nestjs/typeorm";
+import { Connection, getConnectionOptions } from "typeorm";
+import { AppController } from "./app.controller";
+import { AppService } from "./app.service";
 // import { Photo } from './entities/photo.entity';
 // import { User } from './entities/user.entity';
-import { UsersModule } from './users/users.module';
+import { UsersModule } from "./users/users.module";
+import { UserModule } from "./user/user.module";
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { UsersModule } from './users/users.module';
         }),
     }),
     UsersModule,
+    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService],

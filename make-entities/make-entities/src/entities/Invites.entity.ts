@@ -12,15 +12,12 @@ import { Users } from "./users.entity";
 
 @Entity()
 export class Invites {
-  // @PrimaryGeneratedColumn()
-  // id: number;
-
-  @ManyToOne(() => Users, (user) => user.id)
+  @ManyToOne(() => Users, (user) => user.invites_from)
   @JoinColumn({ name: "user_from_id" })
   @PrimaryColumn()
   user_from_id: number;
 
-  @ManyToOne(() => Users, (user) => user.id)
+  @ManyToOne(() => Users, (user) => user.invites_to)
   @JoinColumn({ name: "user_to_id" })
   @PrimaryColumn()
   user_to_id: number;
@@ -28,4 +25,7 @@ export class Invites {
   @CreateDateColumn()
   @IsDate()
   created_at: Date;
+
+  @JoinColumn()
+  user: Users;
 }
