@@ -7,10 +7,10 @@ import {
   UpdateDateColumn,
   Check,
   Index,
-  JoinColumn,
 } from "typeorm";
 import { IsDate, IsEmail, Min } from "class-validator";
 import { Invites } from "./Invites.entity";
+import { DirectMessages } from "./direct_messages.entity";
 
 @Entity()
 @Check(`"rate" >= 0`)
@@ -19,14 +19,14 @@ export class Users {
   id: number;
 
   @Index()
-  @Column({ unique: true })
+  @Column({ type: "text", unique: true })
   name: string;
 
   @Index()
-  @Column({ unique: true })
+  @Column({ type: "text", unique: true })
   intra_id: string;
 
-  @Column({ nullable: true })
+  @Column({ type: "text", nullable: true })
   @IsEmail()
   email: string;
 
@@ -37,20 +37,14 @@ export class Users {
   @Column()
   status: number;
 
-  @Column()
+  @Column({ type: "text" })
   onetimepass_digest: string;
 
-  @Column()
+  @Column({ type: "text" })
   remenber_digest: string;
 
-  @Column({ nullable: true })
+  @Column({ type: "text", nullable: true })
   avatar: string;
-
-  @OneToMany(() => Invites, (invite) => invite.user_from_id)
-  invites_from: Invites[];
-
-  @OneToMany(() => Invites, (invite) => invite.user_to_id)
-  invites_to: Invites[];
 
   @CreateDateColumn()
   @IsDate()
@@ -59,4 +53,19 @@ export class Users {
   @UpdateDateColumn()
   @IsDate()
   updated_at: Date;
+
+  @OneToMany(() => Invites, (invite) => invite.user_from_id)
+  invites_from: Invites[];
+
+  @OneToMany(() => Invites, (invite) => invite.user_to_id)
+  invites_to: Invites[];
+
+  @OneToMany(
+    () => DirectMessages,
+    (directMessage) => directMessage.user_from_id
+  )
+  directMessage_from: Invites[];
+
+  @OneToMany(() => DirectMessages, (directMessage) => directMessage.user_to_id)
+  directMessage_to: Invites[];
 }
