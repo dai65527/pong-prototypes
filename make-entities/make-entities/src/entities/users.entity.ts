@@ -11,6 +11,7 @@ import {
 import { IsDate, IsEmail, Min } from "class-validator";
 import { Invites } from "./Invites.entity";
 import { DirectMessages } from "./direct_messages.entity";
+import { DirectMessageInfo } from "./direct_message_info.entity";
 
 @Entity()
 @Check(`"rate" >= 0`)
@@ -64,8 +65,20 @@ export class Users {
     () => DirectMessages,
     (directMessage) => directMessage.user_from_id
   )
-  directMessage_from: Invites[];
+  directMessage_from: DirectMessages[];
 
   @OneToMany(() => DirectMessages, (directMessage) => directMessage.user_to_id)
-  directMessage_to: Invites[];
+  directMessage_to: DirectMessages[];
+
+  @OneToMany(
+    () => DirectMessageInfo,
+    (directMessageInfo) => directMessageInfo.user_from_id
+  )
+  direct_message_info_user_from_id: DirectMessageInfo[];
+
+  @OneToMany(
+    () => DirectMessageInfo,
+    (directMessageInfo) => directMessageInfo.user_to_id
+  )
+  user_to_id: DirectMessageInfo[];
 }

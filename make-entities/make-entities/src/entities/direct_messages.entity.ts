@@ -6,7 +6,9 @@ import {
   ManyToOne,
   CreateDateColumn,
   JoinColumn,
+  OneToMany,
 } from "typeorm";
+import { DirectMessageInfo } from "./direct_message_info.entity";
 import { Users } from "./users.entity";
 
 @Entity()
@@ -30,4 +32,10 @@ export class DirectMessages {
   @CreateDateColumn()
   @IsDate()
   created_at: Date;
+
+  @OneToMany(
+    () => DirectMessageInfo,
+    (directMessageInfo) => directMessageInfo.last_checked_message_id
+  )
+  directMessageInfo: DirectMessageInfo[];
 }
