@@ -12,6 +12,7 @@ import { IsDate, IsEmail, Min } from "class-validator";
 import { Invites } from "./Invites.entity";
 import { DirectMessages } from "./direct_messages.entity";
 import { DirectMessageInfo } from "./direct_message_info.entity";
+import { Friends } from "./friends.entity";
 
 @Entity()
 @Check(`"rate" >= 0`)
@@ -54,6 +55,12 @@ export class Users {
   @UpdateDateColumn()
   @IsDate()
   updated_at: Date;
+
+  @OneToMany(() => Friends, (friend) => friend.user_from_id)
+  friends_from: Friends[];
+
+  @OneToMany(() => Friends, (friend) => friend.user_to_id)
+  friends_to: Friends[];
 
   @OneToMany(() => Invites, (invite) => invite.user_from_id)
   invites_from: Invites[];
