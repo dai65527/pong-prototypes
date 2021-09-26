@@ -23,12 +23,12 @@ export class Chats {
   @Column({ type: "text" })
   name: string;
 
-  @ManyToOne(() => Users, (user) => user.chats_owner_id)
+  @ManyToOne(() => Users, (user) => user.chats_owner_id, { nullable: false })
   @JoinColumn({ name: "owner_id" })
   @Index()
   owner_id: Users;
 
-  @ManyToOne(() => Users, (user) => user.chats_admin_id, { nullable: false })
+  @ManyToOne(() => Users, (user) => user.chats_admin_id)
   @JoinColumn({ name: "admin_id" })
   @Index()
   admin_id: Users;
