@@ -27,7 +27,7 @@ export class Chatmember {
   @ManyToOne(() => Users, (user) => user.chatmember_user_id, {
     nullable: false,
   })
-  @JoinColumn({ name: "user_to_id" })
+  @JoinColumn({ name: "user_id" })
   @Index()
   user_id: number;
 
