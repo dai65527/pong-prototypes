@@ -1,0 +1,16 @@
+# Dockerfile for dev
+FROM node:lts-buster
+
+WORKDIR /app
+
+RUN npm install -g @nestjs/cli
+
+ADD server/package*.json ./server/
+RUN cd server && npm ci
+
+ADD server /app/server
+ADD client/src/shared client/src/shared/
+
+WORKDIR /app/server
+
+CMD [ "npm", "run", "start:dev" ]

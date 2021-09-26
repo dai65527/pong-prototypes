@@ -1,0 +1,15 @@
+# Dockerfile for dev
+FROM node:lts-buster
+
+WORKDIR /app
+
+RUN npm install -g react-scripts
+
+ADD client/package*.json ./client/
+RUN cd client && npm ci
+
+ADD client ./client
+
+WORKDIR /app/client
+
+CMD [ "npm", "run", "start" ]
