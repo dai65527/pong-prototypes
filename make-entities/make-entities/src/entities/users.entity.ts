@@ -93,11 +93,11 @@ export class Users {
   )
   user_to_id: DirectMessageInfo[];
 
-  @OneToMany(() => Chats, (chats) => chats.user_from_id)
-  chats_user_from_id: Chats[];
+  @OneToMany(() => Chats, (chats) => chats.owner_id)
+  chats_owner_id: Chats[];
 
-  @OneToMany(() => Chats, (chats) => chats.user_to_id)
-  chats_user_to_id: Chats[];
+  @OneToMany(() => Chats, (chats) => chats.admin_id)
+  chats_admin_id: Chats[];
 
   @OneToMany(() => ChatMessages, (chatMessages) => chatMessages.user_id)
   chat_messages_user_id: Chats[];

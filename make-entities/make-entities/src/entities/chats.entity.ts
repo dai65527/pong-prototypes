@@ -23,17 +23,15 @@ export class Chats {
   @Column({ type: "text" })
   name: string;
 
-  @ManyToOne(() => Users, (user) => user.chats_user_from_id, {
-    nullable: false,
-  })
-  @JoinColumn({ name: "user_from_id" })
+  @ManyToOne(() => Users, (user) => user.chats_owner_id)
+  @JoinColumn({ name: "owner_id" })
   @Index()
-  user_from_id: Users;
+  owner_id: Users;
 
-  @ManyToOne(() => Users, (user) => user.chats_user_to_id, { nullable: false })
-  @JoinColumn({ name: "user_to_id" })
+  @ManyToOne(() => Users, (user) => user.chats_admin_id, { nullable: false })
+  @JoinColumn({ name: "admin_id" })
   @Index()
-  user_to_id: Users;
+  admin_id: Users;
 
   @Column({ type: "text" })
   password_digest: string;
