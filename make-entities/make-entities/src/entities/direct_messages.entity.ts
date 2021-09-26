@@ -7,6 +7,7 @@ import {
   CreateDateColumn,
   JoinColumn,
   OneToMany,
+  Index,
 } from "typeorm";
 import { DirectMessageInfo } from "./direct_message_info.entity";
 import { Users } from "./users.entity";
@@ -20,10 +21,12 @@ export class DirectMessages {
     nullable: false,
   })
   @JoinColumn({ name: "user_from_id" })
+  @Index()
   user_from_id: Users;
 
   @ManyToOne(() => Users, (user) => user.directMessage_to, { nullable: false })
   @JoinColumn({ name: "user_to_id" })
+  @Index()
   user_to_id: Users;
 
   @Column({ type: "text" })
