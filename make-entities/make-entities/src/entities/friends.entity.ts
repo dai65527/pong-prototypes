@@ -15,11 +15,13 @@ export class Friends {
   @ManyToOne(() => Users, (user) => user.invites_from)
   @JoinColumn({ name: "user_from_id" })
   @PrimaryColumn()
+  @Index()
   user_from_id: number;
 
   @ManyToOne(() => Users, (user) => user.invites_to)
   @JoinColumn({ name: "user_to_id" })
   @PrimaryColumn()
+  @Index()
   user_to_id: number;
 
   @CreateDateColumn()

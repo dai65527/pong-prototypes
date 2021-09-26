@@ -7,6 +7,7 @@ import {
   JoinColumn,
   PrimaryColumn,
   UpdateDateColumn,
+  Index,
 } from "typeorm";
 import { DirectMessages } from "./direct_messages.entity";
 import { Users } from "./users.entity";
@@ -18,11 +19,13 @@ export class DirectMessageInfo {
     nullable: false,
   })
   @JoinColumn({ name: "user_from_id" })
+  @Index()
   user_from_id: number;
 
   @PrimaryColumn()
   @ManyToOne(() => Users, (user) => user.directMessage_to, { nullable: false })
   @JoinColumn({ name: "user_to_id" })
+  @Index()
   user_to_id: number;
 
   @Column({ default: false })
