@@ -15,6 +15,7 @@ import { DirectMessageInfo } from "./direct_message_info.entity";
 import { Friends } from "./friends.entity";
 import { Chats } from "./chats.entity";
 import { ChatMessages } from "./chat_messages.entity";
+import { Chatmember } from "./chatmember.entity";
 
 @Entity()
 @Check(`"rate" >= 0`)
@@ -99,4 +100,7 @@ export class Users {
 
   @OneToMany(() => ChatMessages, (chatMessages) => chatMessages.user_id)
   chat_messages_user_id: Chats[];
+
+  @OneToMany(() => Chatmember, (chatmember) => chatmember.user_id)
+  chatmember_user_id: Chatmember[];
 }

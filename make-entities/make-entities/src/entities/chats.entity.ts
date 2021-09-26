@@ -13,6 +13,7 @@ import {
 import { IsDate, IsEmail, Min } from "class-validator";
 import { Users } from "./users.entity";
 import { ChatMessages } from "./chat_messages.entity";
+import { Chatmember } from "./chatmember.entity";
 
 @Entity()
 export class Chats {
@@ -46,5 +47,8 @@ export class Chats {
   updated_at: Date;
 
   @OneToMany(() => ChatMessages, (chatMessages) => chatMessages.chat_id)
-  chat_messages_chat_id: Chats[];
+  chat_messages_chat_id: ChatMessages[];
+
+  @OneToMany(() => Chatmember, (chatmember) => chatmember.chat_id)
+  chatmember_chat_id: Chatmember[];
 }

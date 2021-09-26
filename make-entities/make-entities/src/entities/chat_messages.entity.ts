@@ -13,6 +13,7 @@ import {
 import { IsDate, IsEmail, Min } from "class-validator";
 import { Users } from "./users.entity";
 import { Chats } from "./chats.entity";
+import { Chatmember } from "./chatmember.entity";
 
 @Entity()
 export class ChatMessages {
@@ -39,4 +40,10 @@ export class ChatMessages {
   @CreateDateColumn()
   @IsDate()
   created_at: Date;
+
+  @OneToMany(
+    () => Chatmember,
+    (chatmember) => chatmember.last_checked_message_id
+  )
+  chatmember_chat_id: Chatmember[];
 }
