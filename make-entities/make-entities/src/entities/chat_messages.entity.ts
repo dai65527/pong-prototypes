@@ -4,13 +4,11 @@ import {
   PrimaryGeneratedColumn,
   OneToMany,
   CreateDateColumn,
-  UpdateDateColumn,
-  Check,
   Index,
   ManyToOne,
   JoinColumn,
 } from "typeorm";
-import { IsDate, IsEmail, Min } from "class-validator";
+import { IsDate } from "class-validator";
 import { Users } from "./users.entity";
 import { Chats } from "./chats.entity";
 import { Chatmember } from "./chatmember.entity";
