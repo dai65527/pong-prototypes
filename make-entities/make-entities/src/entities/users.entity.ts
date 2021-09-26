@@ -16,6 +16,7 @@ import { Friends } from "./friends.entity";
 import { Chats } from "./chats.entity";
 import { ChatMessages } from "./chat_messages.entity";
 import { Chatmember } from "./chatmember.entity";
+import { Games } from "./games.entity";
 
 @Entity()
 @Check(`"rate" >= 0`)
@@ -103,4 +104,10 @@ export class Users {
 
   @OneToMany(() => Chatmember, (chatmember) => chatmember.user_id)
   chatmember_user_id: Chatmember[];
+
+  @OneToMany(() => Games, (game) => game.user_first_id)
+  games_user_first_id: Games[];
+
+  @OneToMany(() => Games, (game) => game.user_second_id)
+  games_user_second_id: Games[];
 }
