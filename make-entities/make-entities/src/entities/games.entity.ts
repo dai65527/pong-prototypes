@@ -7,7 +7,6 @@ import {
   Index,
   ManyToOne,
   JoinColumn,
-  PrimaryColumn,
 } from "typeorm";
 import { IsDate, Min } from "class-validator";
 import { Users } from "./users.entity";
@@ -53,19 +52,19 @@ export class Games {
   @Column()
   map_id: number;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ type: "timestamp with time zone" })
   @IsDate()
   created_at: Date;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, type: "timestamp with time zone" })
   @IsDate()
   started_at: Date;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, type: "timestamp with time zone" })
   @IsDate()
   finished_at: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ type: "timestamp with time zone" })
   @IsDate()
   updated_at: Date;
 }

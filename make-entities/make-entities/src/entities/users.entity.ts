@@ -52,11 +52,11 @@ export class Users {
   @Column({ type: "text", nullable: true })
   avatar: string;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ type: "timestamp with time zone" })
   @IsDate()
   created_at: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ type: "timestamp with time zone" })
   @IsDate()
   updated_at: Date;
 

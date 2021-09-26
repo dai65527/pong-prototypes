@@ -38,11 +38,11 @@ export class Chats {
   @Column({ type: "text" })
   password_digest: string;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ type: "timestamp with time zone" })
   @IsDate()
   created_at: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ type: "timestamp with time zone" })
   @IsDate()
   updated_at: Date;
 

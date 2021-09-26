@@ -44,7 +44,7 @@ export class Chatmember {
   @JoinColumn({ name: "last_checked_message_id" })
   last_checked_message_id: number;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ type: "timestamp with time zone" })
   @IsDate()
   created_at: Date;
 }

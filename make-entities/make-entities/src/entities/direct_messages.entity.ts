@@ -32,7 +32,7 @@ export class DirectMessages {
   @Column({ type: "text" })
   message: string;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ type: "timestamp with time zone" })
   @IsDate()
   created_at: Date;
 

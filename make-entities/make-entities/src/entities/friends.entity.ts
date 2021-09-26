@@ -24,7 +24,7 @@ export class Friends {
   @Index()
   user_to_id: number;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ type: "timestamp with time zone" })
   @IsDate()
   created_at: Date;
 

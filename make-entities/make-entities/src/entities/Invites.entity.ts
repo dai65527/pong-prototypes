@@ -3,7 +3,6 @@ import {
   CreateDateColumn,
   ManyToOne,
   PrimaryColumn,
-  PrimaryGeneratedColumn,
   Index,
   JoinColumn,
 } from "typeorm";
@@ -24,7 +23,7 @@ export class Invites {
   @Index()
   user_to_id: number;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ type: "timestamp with time zone" })
   @IsDate()
   created_at: Date;
 
