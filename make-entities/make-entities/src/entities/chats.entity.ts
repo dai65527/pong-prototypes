@@ -5,12 +5,11 @@ import {
   OneToMany,
   CreateDateColumn,
   UpdateDateColumn,
-  Check,
   Index,
   ManyToOne,
   JoinColumn,
 } from "typeorm";
-import { IsDate, IsEmail, Min } from "class-validator";
+import { IsDate } from "class-validator";
 import { Users } from "./users.entity";
 import { ChatMessages } from "./chat_messages.entity";
 import { Chatmember } from "./chatmember.entity";
@@ -23,15 +22,15 @@ export class Chats {
   @Column({ type: "text" })
   name: string;
 
-  @ManyToOne(() => Users, (user) => user.chats_owner_id, { nullable: false })
+  @ManyToOne(() => Users, (user) => user.chats_owner, { nullable: false })
   @JoinColumn({ name: "owner_id" })
   @Index()
-  owner_id: Users;
+  owner: Users;
 
-  @ManyToOne(() => Users, (user) => user.chats_admin_id)
+  @ManyToOne(() => Users, (user) => user.chats_admin)
   @JoinColumn({ name: "admin_id" })
   @Index()
-  admin_id: Users;
+  admin: Users;
 
   @Column({ type: "text" })
   password_digest: string;
@@ -44,9 +43,9 @@ export class Chats {
   @IsDate()
   updated_at: Date;
 
-  @OneToMany(() => ChatMessages, (chatMessages) => chatMessages.chat_id)
-  chat_messages_chat_id: ChatMessages[];
+  @OneToMany(() => ChatMessages, (chatMessages) => chatMessages.chat)
+  chat_messages: ChatMessages[];
 
   @OneToMany(() => Chatmember, (chatmember) => chatmember.chat_id)
-  chatmember_chat_id: Chatmember[];
+  chatmembers: Chatmember[];
 }

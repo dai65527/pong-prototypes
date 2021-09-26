@@ -20,19 +20,19 @@ export class ChatMessages {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => Chats, (chat) => chat.chat_messages_chat_id, {
+  @ManyToOne(() => Chats, (chat) => chat.chat_messages, {
     nullable: false,
   })
   @JoinColumn({ name: "chat_id" })
   @Index()
-  chat_id: Chats;
+  chat: Chats;
 
-  @ManyToOne(() => Users, (user) => user.chat_messages_user_id, {
+  @ManyToOne(() => Users, (user) => user.chat_messages, {
     nullable: false,
   })
   @JoinColumn({ name: "user_id" })
   @Index()
-  user_id: Users;
+  user: Users;
 
   @Column({ type: "text" })
   message: string;
@@ -41,9 +41,6 @@ export class ChatMessages {
   @IsDate()
   created_at: Date;
 
-  @OneToMany(
-    () => Chatmember,
-    (chatmember) => chatmember.last_checked_message_id
-  )
+  @OneToMany(() => Chatmember, (chatmember) => chatmember.last_checked_message)
   chatmember_chat_id: Chatmember[];
 }

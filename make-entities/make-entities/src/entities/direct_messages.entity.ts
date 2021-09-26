@@ -17,17 +17,19 @@ export class DirectMessages {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => Users, (user) => user.directMessage_from, {
+  @ManyToOne(() => Users, (user) => user.directMessages_user_from, {
     nullable: false,
   })
   @JoinColumn({ name: "user_from_id" })
   @Index()
-  user_from_id: Users;
+  user_from: Users;
 
-  @ManyToOne(() => Users, (user) => user.directMessage_to, { nullable: false })
+  @ManyToOne(() => Users, (user) => user.directMessages_user_to, {
+    nullable: false,
+  })
   @JoinColumn({ name: "user_to_id" })
   @Index()
-  user_to_id: Users;
+  user_to: Users;
 
   @Column({ type: "text" })
   message: string;
@@ -38,7 +40,7 @@ export class DirectMessages {
 
   @OneToMany(
     () => DirectMessageInfo,
-    (directMessageInfo) => directMessageInfo.last_checked_message_id
+    (directMessageInfo) => directMessageInfo.direct_message
   )
-  directMessageInfo: DirectMessageInfo[];
+  direct_message_infos: DirectMessageInfo[];
 }

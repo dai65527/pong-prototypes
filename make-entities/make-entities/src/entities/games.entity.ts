@@ -16,15 +16,15 @@ export class Games {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => Users, (user) => user.games_user_first_id)
+  @ManyToOne(() => Users, (user) => user.games_user_first)
   @JoinColumn({ name: "user_first_id" })
   @Index()
-  user_first_id: number;
+  user_first: Users;
 
-  @ManyToOne(() => Users, (user) => user.games_user_second_id)
+  @ManyToOne(() => Users, (user) => user.games_user_second)
   @JoinColumn({ name: "user_second_id" })
   @Index()
-  user_second_id: number;
+  user_second: Users;
 
   @Column({ default: 0 })
   @Min(0)

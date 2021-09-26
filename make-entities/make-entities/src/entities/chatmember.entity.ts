@@ -6,7 +6,6 @@ import {
   CreateDateColumn,
   JoinColumn,
   PrimaryColumn,
-  UpdateDateColumn,
   Index,
 } from "typeorm";
 import { Chats } from "./chats.entity";
@@ -16,7 +15,7 @@ import { Users } from "./users.entity";
 @Entity()
 export class Chatmember {
   @PrimaryColumn()
-  @ManyToOne(() => Chats, (chat) => chat.chatmember_chat_id, {
+  @ManyToOne(() => Chats, (chat) => chat.chatmembers, {
     nullable: false,
   })
   @JoinColumn({ name: "chat_id" })
@@ -24,7 +23,7 @@ export class Chatmember {
   chat_id: number;
 
   @PrimaryColumn()
-  @ManyToOne(() => Users, (user) => user.chatmember_user_id, {
+  @ManyToOne(() => Users, (user) => user.chatmembers_user, {
     nullable: false,
   })
   @JoinColumn({ name: "user_id" })
@@ -42,9 +41,15 @@ export class Chatmember {
     (chatMessage) => chatMessage.chatmember_chat_id
   )
   @JoinColumn({ name: "last_checked_message_id" })
-  last_checked_message_id: number;
+  last_checked_message: ChatMessages;
 
   @CreateDateColumn({ type: "timestamp with time zone" })
   @IsDate()
   created_at: Date;
+
+  @JoinColumn()
+  user: Users;
+
+  @JoinColumn()
+  chat: Chats;
 }

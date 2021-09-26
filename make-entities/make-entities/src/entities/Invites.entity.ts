@@ -11,13 +11,13 @@ import { Users } from "./users.entity";
 
 @Entity()
 export class Invites {
-  @ManyToOne(() => Users, (user) => user.invites_from)
+  @ManyToOne(() => Users, (user) => user.invites_user_from)
   @JoinColumn({ name: "user_from_id" })
   @PrimaryColumn()
   @Index()
   user_from_id: number;
 
-  @ManyToOne(() => Users, (user) => user.invites_to)
+  @ManyToOne(() => Users, (user) => user.invites_user_to)
   @JoinColumn({ name: "user_to_id" })
   @PrimaryColumn()
   @Index()

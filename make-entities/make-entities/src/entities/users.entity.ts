@@ -61,53 +61,50 @@ export class Users {
   updated_at: Date;
 
   @OneToMany(() => Friends, (friend) => friend.user_from_id)
-  friends_from: Friends[];
+  friends_user_from: Friends[];
 
   @OneToMany(() => Friends, (friend) => friend.user_to_id)
-  friends_to: Friends[];
+  friends_user_to: Friends[];
 
   @OneToMany(() => Invites, (invite) => invite.user_from_id)
-  invites_from: Invites[];
+  invites_user_from: Invites[];
 
   @OneToMany(() => Invites, (invite) => invite.user_to_id)
-  invites_to: Invites[];
+  invites_user_to: Invites[];
 
-  @OneToMany(
-    () => DirectMessages,
-    (directMessage) => directMessage.user_from_id
-  )
-  directMessage_from: DirectMessages[];
+  @OneToMany(() => DirectMessages, (directMessage) => directMessage.user_from)
+  directMessages_user_from: DirectMessages[];
 
-  @OneToMany(() => DirectMessages, (directMessage) => directMessage.user_to_id)
-  directMessage_to: DirectMessages[];
+  @OneToMany(() => DirectMessages, (directMessage) => directMessage.user_to)
+  directMessages_user_to: DirectMessages[];
 
   @OneToMany(
     () => DirectMessageInfo,
     (directMessageInfo) => directMessageInfo.user_from_id
   )
-  direct_message_info_user_from_id: DirectMessageInfo[];
+  direct_message_infos_user_from: DirectMessageInfo[];
 
   @OneToMany(
     () => DirectMessageInfo,
     (directMessageInfo) => directMessageInfo.user_to_id
   )
-  user_to_id: DirectMessageInfo[];
+  direct_message_infos_user_to: DirectMessageInfo[];
 
-  @OneToMany(() => Chats, (chats) => chats.owner_id)
-  chats_owner_id: Chats[];
+  @OneToMany(() => Chats, (chats) => chats.owner)
+  chats_owner: Chats[];
 
-  @OneToMany(() => Chats, (chats) => chats.admin_id)
-  chats_admin_id: Chats[];
+  @OneToMany(() => Chats, (chats) => chats.admin)
+  chats_admin: Chats[];
 
-  @OneToMany(() => ChatMessages, (chatMessages) => chatMessages.user_id)
-  chat_messages_user_id: Chats[];
+  @OneToMany(() => ChatMessages, (chatMessages) => chatMessages.user)
+  chat_messages: ChatMessages[];
 
   @OneToMany(() => Chatmember, (chatmember) => chatmember.user_id)
-  chatmember_user_id: Chatmember[];
+  chatmembers_user: Chatmember[];
 
-  @OneToMany(() => Games, (game) => game.user_first_id)
-  games_user_first_id: Games[];
+  @OneToMany(() => Games, (game) => game.user_first)
+  games_user_first: Games[];
 
-  @OneToMany(() => Games, (game) => game.user_second_id)
-  games_user_second_id: Games[];
+  @OneToMany(() => Games, (game) => game.user_second)
+  games_user_second: Games[];
 }
