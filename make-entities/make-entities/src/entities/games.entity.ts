@@ -7,11 +7,13 @@ import {
   Index,
   ManyToOne,
   JoinColumn,
+  Check,
 } from "typeorm";
-import { IsDate, Min } from "class-validator";
+import { IsDate, IsIn, Min } from "class-validator";
 import { Users } from "./users.entity";
 
 @Entity()
+@Check(`"points_to_win" IN (5, 10, 15)`)
 export class Games {
   @PrimaryGeneratedColumn()
   id: number;
@@ -40,7 +42,8 @@ export class Games {
   @Column()
   user_second_level: number;
 
-  @Column()
+  @Column({ default: 10 })
+  @IsIn([5, 10, 15])
   points_to_win: number;
 
   @Column()
