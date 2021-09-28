@@ -62,6 +62,7 @@ export class Games {
 
   @Column({ nullable: true, type: "timestamp with time zone" })
   @IsDate()
+  @Index()
   finished_at: Date;
 
   @UpdateDateColumn({ type: "timestamp with time zone" })
