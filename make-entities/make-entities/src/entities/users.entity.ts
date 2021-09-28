@@ -46,7 +46,7 @@ export class Users {
   @Column({ type: "text" })
   onetimepass_digest: string;
 
-  @Column({ type: "text" })
+  @Column({ type: "text", nullable: true })
   remenber_digest: string;
 
   @Column({ type: "text", nullable: true })
