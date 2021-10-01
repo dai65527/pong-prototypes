@@ -9,18 +9,28 @@
 </head>
 
 <body>
-    <button id="insecure">Insecure Request</button>
+    <button id="secure_local">Local Auth Request</button>
     <div id="status"></div>
     <div id="output"></div>
 
     <script>
-        document.querySelector('#insecure').addEventListener('click', function () {
-            fetch('/api/insecure').then(function (res) {
+        document.querySelector('#secure_local').addEventListener('click', function () {
+            var data = new FormData();
+            data.append('username', 'admin');
+            data.append('password', 'admin');
+            console.log(data.get("username"));
+            console.log(data.get("password"));
+            // data = {
+            //     "username": "admin",
+            //     "password": "admin",
+            // }
+
+            fetch('/api/secure/local', { method: "POST", body: data }).then(function (res) {
                 document.querySelector('#status').innerHTML = res.statusText;
                 res.text().then(function (text) {
                     document.querySelector('#output').innerHTML = text;
                 });
-            })
+            });
         });
     </script>
 </body>
