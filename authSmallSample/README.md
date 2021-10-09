@@ -1,7 +1,15 @@
 ### How to try this sample
 
+clone and move to directory
+```
+$ git clone https://github.com/dai65527/pong-prototypes.git
+$ cd authSmallSample
+```
+
 install modules.
 ```
+$ git clone https://github.com/dai65527/pong-prototypes.git
+$ cd authSmallSample
 $ npm ci
 ```
 
