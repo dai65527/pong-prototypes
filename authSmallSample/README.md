@@ -26,3 +26,4 @@ $ node app.js
 ```
 
 then, access to http://localhost:3000.
+(loginid: `user`、password: `pass`)
