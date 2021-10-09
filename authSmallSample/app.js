@@ -6,6 +6,8 @@ var jwt = require("jsonwebtoken");
 var cookieParser = require("cookie-parser");
 var fetch = require("node-fetch");
 
+require('dotenv').config();
+
 var app = express();
 var upload = multer();
 app.use(upload.array());
