@@ -1,0 +1,18 @@
+@startuml
+
+Client -> Server : signin request(42login id)
+Server -> Server : Save or update user state
+Server -> Client : 42api auth page URL (with state)
+Client -> 42API : access to login page
+42API -> Client : authorize and redirect (redirect with code and state)
+Client -> Server : request access token\n(code and state)
+Server -> Server : check state
+Server -> 42API : request access token\nto check user (code)
+42API -> Server : response (access token)
+Server -> Server : create JWT
+Server -> Client : authorize (JWT)
+Client -> Server : some request (with JWT)
+Server -> Server : verify JWT
+Server -> Client : response
+
+@enduml

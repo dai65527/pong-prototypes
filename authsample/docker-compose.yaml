@@ -1,0 +1,52 @@
+version: "3"
+
+services:
+  database:
+    image: postgres:10
+    container_name: authsample-db
+    env_file:
+      - ./.env
+    environment:
+      - ENV=dev
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./database/data:/var/lib/postgresql/data
+
+  # server:
+  #   image: chatsample-server:dev
+  #   container_name: chatsample-server
+  #   build:
+  #     dockerfile: Dockerfile.server.dev
+  #     context: ./
+  #   env_file:
+  #     - ./server/.env
+  #   environment:
+  #     - ENV=dev
+  #     - SERVER_PORT=5000
+  #     - WEBSOCKET_PORT=4000
+  #     - TYPEORM_HOST=database
+  #     - TYPEORM_PORT=5432
+  #   volumes:
+  #     - ./server:/app/server
+  #     - ./client/src/shared:/app/client/src/shared
+  #     - /app/server/node_modules # https://castaneai.hatenablog.com/entry/2019/01/29/151257
+  #   ports:
+  #     - "4000:4000"
+  #     - "5000:5000"
+  #   depends_on:
+  #     - database
+
+  # client:
+  #   image: chatsample-client:dev
+  #   container_name: chatsample-client
+  #   build:
+  #     dockerfile: Dockerfile.client.dev
+  #     context: ./
+  #   volumes:
+  #     - ./client:/app/client
+  #     - /app/client/node_modules # https://castaneai.hatenablog.com/entry/2019/01/29/151257
+  #   ports:
+  #     - "3000:3000"
+  #   depends_on:
+  #     - server
