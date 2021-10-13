@@ -5,6 +5,7 @@ import {
   Route,
   Link
 } from "react-router-dom";
+import Users from './pages/Users';
 
 function App() {
   return (
@@ -30,8 +31,7 @@ function App() {
             <p>This is about page.</p>
           </Route>
           <Route path="/users">
-            <h1>Users</h1>
-            <p>This is users page.</p>
+            <Users />
           </Route>
           <Route path="/">
             <h1>Home</h1>
