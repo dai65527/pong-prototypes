@@ -1,0 +1,23 @@
+{
+   "name": "type-orm-init",
+   "version": "1.0.0",
+   "description": "",
+   "main": "index.js",
+   "scripts": {
+      "test": "echo \"Error: no test specified\" && exit 1",
+      "start": "ts-node src/index.ts"
+   },
+   "author": "",
+   "license": "ISC",
+   "dependencies": {
+      "pg": "^8.7.1",
+      "typeorm": "0.2.37",
+      "reflect-metadata": "^0.1.10",
+      "mysql": "^2.14.1"
+   },
+   "devDependencies": {
+      "ts-node": "3.3.0",
+      "@types/node": "^8.0.29",
+      "typescript": "3.3.3333"
+   }
+}
