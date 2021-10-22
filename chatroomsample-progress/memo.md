@@ -1,0 +1,88 @@
+### 入れるパッケージ
+
+```
+yarn add -D @types/socket.io
+yarn add @nestjs/websockets @nestjs/platform-socket.io
+```
+
+### 基本的な handleMessage
+
+以下 2 つは一緒
+
+```ts
+  @SubscribeMessage("msgToServer")
+  handleMessage(client: Socket, text: string): void {
+    client.emit("msgToClient", text);
+  }
+```
+
+```ts
+  @SubscribeMessage("msgToServer")
+  handleMessage(client: Socket, text: string): WsResponse<string> {
+    return { event: "msgToClient", data: "Hello World!" };
+  }
+```
+
+これもある
+
+```ts
+  @WebSocketServer() wss: Server;
+
+  @SubscribeMessage("msgToServer")
+  handleMessage(client: Socket, text: string): void {
+    this.wss.emit("msgToClient", text);
+  }
+```
+
+### オプション
+
+#### ポートを変更する
+
+サーバ
+
+```ts
+@WebSocketGateway(3001)
+```
+
+クライアント
+
+```html
+<script src="https://localhost:3001/websockets/socket.io.js"></script>
+```
+
+```js
+this.socket = io("http://localhost:3001");
+```
+
+#### Namespace (= path)を指定する
+
+サーバ
+
+```ts
+@WebSocketGateway({ path: "/websockets" })
+```
+
+クライアント
+
+```html
+<script src="/websockets/socket.io.js"></script>
+```
+
+```js
+this.socket = io("http://localhost:3000", { path: "/websockets" });
+```
+
+#### docs
+
+サーバ側のオプションはここに書いてある
+https://socket.io/docs/v4/server-options/#path
+
+### serveClient オプション
+
+クライアントに websocket の js ソースを供給するかを設定。
+https://socket.io/docs/v4/server-options/#serveclient
+
+```ts
+@WebSocketGateway({ path: "/websockets", serveClient: true }) // 供給しない
+@WebSocketGateway({ path: "/websockets", serveClient: false }) // 供給する
+```
