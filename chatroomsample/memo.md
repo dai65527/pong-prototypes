@@ -54,7 +54,7 @@ yarn add @nestjs/websockets @nestjs/platform-socket.io
 this.socket = io("http://localhost:3001");
 ```
 
-#### Namespace (= path)を指定する
+#### path ( != namespace )を指定する
 
 サーバ
 
@@ -85,4 +85,18 @@ https://socket.io/docs/v4/server-options/#serveclient
 ```ts
 @WebSocketGateway({ path: "/websockets", serveClient: true }) // 供給しない
 @WebSocketGateway({ path: "/websockets", serveClient: false }) // 供給する
+```
+
+#### namespace
+
+クライアント: パスで指定。
+
+```js
+this.socket.chat = io("http://localhost:3000/chat");
+```
+
+#### nest コマンドでディレクトリ内に作る
+
+```
+$ nest g gateway chat chat
 ```
