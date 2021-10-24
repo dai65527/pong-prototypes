@@ -36,9 +36,14 @@ export class JwtTwoFactorStrategy extends PassportStrategy(
     if (payload === null) {
       throw new UnauthorizedException();
     }
-    const isTwoFactorAuthenticationEnabled: boolean =
-      await this.userService.isTwoFactorAuthenticationEnabled(payload.userId);
-    if (isTwoFactorAuthenticationEnabled) {
+    // const isTwoFactorAuthenticationEnabled: boolean =
+    //   await this.userService.isTwoFactorAuthenticationEnabled(payload.userId);
+    // console.log(
+    //   'isTwoFactorAuthenticationEnabled',
+    //   isTwoFactorAuthenticationEnabled,
+    // );
+    // if (isTwoFactorAuthenticationEnabled) {
+    if (payload.isEnabledSecondFactorAuthenticated) {
       if (payload.isSecondFactorAuthenticated) {
         return payload;
       } else {

@@ -169,6 +169,26 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "http://localhost:3000/users/fav-games",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/users/fav-games",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"users",
+						"fav-games"
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }

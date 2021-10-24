@@ -7,4 +7,5 @@ export class CurrentUser {
   intra_id?: string;
   twoFactorAuthenticationSecret?: string;
   isSecondFactorAuthenticated: boolean;
+  isEnabledSecondFactorAuthenticated: boolean;
 }

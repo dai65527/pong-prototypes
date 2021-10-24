@@ -94,7 +94,8 @@ export class UsersService {
     currentUser.lastName = user.lastName;
     currentUser.email = user.email;
     currentUser.discodeid = user.discodeid;
-
+    currentUser.isEnabledSecondFactorAuthenticated =
+      user.is_two_factor_authentication_enabled;
     return currentUser;
   }
 
@@ -179,6 +180,8 @@ export class UsersService {
     currentUser.lastName = user.lastName;
     currentUser.email = user.email;
     currentUser.intra_id = user.intra_id;
+    currentUser.isEnabledSecondFactorAuthenticated =
+      user.is_two_factor_authentication_enabled;
 
     return currentUser;
   }
