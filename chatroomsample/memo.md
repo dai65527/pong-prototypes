@@ -100,3 +100,20 @@ this.socket.chat = io("http://localhost:3000/chat");
 ```
 $ nest g gateway chat chat
 ```
+
+### room に送る
+
+```ts
+// this.wss.emit("chatToClient", message); // no room
+this.wss.to("message.room").emit("chatToClient", message); // to room
+```
+
+client: room に参加する
+
+```js
+if (this.isMemberOfActiveRoom) {
+  this.socket.chat.emit("leaveRoom", this.activeRoom);
+} else {
+  this.socket.chat.emit("joinRoom", this.activeRoom);
+}
+```
