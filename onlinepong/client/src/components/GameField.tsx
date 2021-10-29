@@ -19,24 +19,13 @@ export type GameProps = {
   pointRight: number; // 右側プレーヤーのポイント
 };
 
-export default function GameField() {
+export default function GameField({ gameProps }: { gameProps: GameProps }) {
   // 描画に関する定数
   const size = { width: 750, height: 500 }; // canvas要素のサイズ
   const barWidth = 10; // バーの幅（y方向長さ）
   const barHeight = 100; // バーの幅（y方向長さ）
   const ballRadius = 10; // ボールの半径
   // const velocity = 1000; // x,y方向速度の絶対値
-
-  const gameProps: GameProps = {
-    status: "left",
-    turn: "left",
-    ballX: 0,
-    ballY: 0,
-    barLeftY: size.height / 2,
-    barRightY: size.height / 2,
-    pointLeft: 0,
-    pointRight: 0,
-  };
 
   // canvas描画のメインループ
   const renderFrame = (ctx: CanvasRenderingContext2D) => {
