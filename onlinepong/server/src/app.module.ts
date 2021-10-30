@@ -1,10 +1,12 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { ScheduleModule } from '@nestjs/schedule';
+import { GameGateway } from './game/game.gateway';
+import { TimeGateway } from './time/time.gateway';
+import { TimeService } from './time/time.service';
 
 @Module({
-  imports: [],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [ScheduleModule.forRoot()],
+  controllers: [],
+  providers: [GameGateway, TimeGateway, TimeService],
 })
 export class AppModule {}
