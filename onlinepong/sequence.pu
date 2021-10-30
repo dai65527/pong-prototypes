@@ -1,0 +1,32 @@
+@startuml
+
+Server -> Server: Wait for player
+ClientA -> Server : Register to wait list
+Server -> Server: Wait for another player
+ClientB -> Server : Register to wait list
+
+Server -> Server: Match players
+Server -> Server: Create a new game
+Server -> Server: Add playerA to game room
+Server -> Server: Add playerB to game room
+
+Server -> ClientA: Send Game Info (First player)
+ClientA -> ClientA: Draw game field
+
+Server -> ClientB: Send Game Info
+ClientB -> ClientB: Draw game field
+
+loop
+
+Server -> ClientA: Send current game data
+Server -> ClientB: Send current game data
+
+ClientA -> ClientA: Draw game field
+ClientA -> Server: Send players move
+
+ClientB -> ClientB: Draw game field
+ClientB -> Server: Send players move
+
+end
+
+@enduml

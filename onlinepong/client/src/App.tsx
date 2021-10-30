@@ -3,6 +3,7 @@ import React from "react";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import Game from "./pages/game";
 import Home from "./pages/home";
+import WStest from "./pages/wstest";
 
 function App() {
   return (
@@ -12,6 +13,9 @@ function App() {
         <Switch>
           <Route path="/game">
             <Game />
+          </Route>
+          <Route path="/wstest">
+            <WStest />
           </Route>
           <Route path="/">
             <Home />

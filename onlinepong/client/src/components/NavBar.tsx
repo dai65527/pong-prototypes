@@ -74,6 +74,7 @@ export default function NavBar({ children }: { children: React.ReactNode }) {
   const pages: { name: string; path: string }[] = [
     { name: "home", path: "/" },
     { name: "game", path: "/game" },
+    { name: "wstest", path: "/wstest" },
   ];
 
   const handleDrawerOpen = () => {
