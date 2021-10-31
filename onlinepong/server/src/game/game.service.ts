@@ -93,7 +93,6 @@ export class GameService {
         }
       }
       game.lastRenderedAt = now;
-      console.log(game);
       this.gameGateway.sendGameData(game);
     });
   }

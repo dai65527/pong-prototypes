@@ -1,3 +1,5 @@
+import { Room } from '@mui/icons-material';
+import { RouterModule } from '@nestjs/core';
 import {
   SubscribeMessage,
   WebSocketGateway,
@@ -44,6 +46,7 @@ type GameRoom = {
 type User = {
   id: number;
   name: string;
+  socketID?: string;
 };
 
 type JoinGamePayload = {
@@ -57,6 +60,12 @@ type WatchGamePayload = {
 
 type GameDataToClientPayload = {
   data: GameRoom;
+};
+
+type UpdateBarPositionPayload = {
+  roomName: string;
+  player: User;
+  barPosition: number;
 };
 
 type ErrorPayload = {
@@ -81,7 +90,8 @@ export class GameGateway {
 
   @SubscribeMessage('joinGame')
   handleJoinGame(client: Socket, payload: JoinGamePayload): void {
-    console.log('joinGame');
+    payload.player.socketID = client.id;
+    console.log(`con ${payload.player.socketID}`);
     // filter room not started
     const rooms = this.gameRooms.filter((gameRoom) => {
       return !gameRoom.leftPlayer || !gameRoom.rightPlayer;
@@ -140,5 +150,57 @@ export class GameGateway {
     // join the room as watcher
     client.join(this.gameRoomID[idx].name);
     this.gameRooms[idx].audience.push(payload.watcher);
+  }
+
+  @SubscribeMessage('updateBarPosition')
+  handleUpdateBar(client: Socket, payload: UpdateBarPositionPayload) {
+    const idx = this.gameRooms.findIndex(
+      (room) => room.name === payload.roomName,
+    );
+    if (payload.player.id === this.gameRooms[idx].leftPlayer?.id) {
+      this.gameRooms[idx].props.barLeftY = payload.barPosition;
+    } else if (payload.player.id === this.gameRooms[idx].rightPlayer?.id) {
+      this.gameRooms[idx].props.barLeftY = payload.barPosition;
+    }
+  }
+
+  @SubscribeMessage('disconnect')
+  handleDisconnect(client: Socket) {
+    let left: boolean;
+    console.log(`disco ${client.id}`);
+
+    const idx = this.gameRooms.findIndex((room) => {
+      if (room.leftPlayer?.socketID === client.id) {
+        left = true;
+      } else if (room.rightPlayer?.socketID === client.id) {
+        left = false;
+      } else {
+        return false;
+      }
+      return true;
+    });
+    if (idx === -1) {
+      return;
+    }
+    console.log(idx);
+    if (left) {
+      if (!this.gameRooms[idx].rightPlayer) {
+        this.gameRooms.splice(idx, 1);
+        return;
+      }
+      this.gameRooms[idx].leftPlayer = null;
+      if (this.gameRooms[idx].props.status !== 'over') {
+        this.gameRooms[idx].props.pointRight = 42;
+      }
+    } else {
+      if (!this.gameRooms[idx].leftPlayer) {
+        this.gameRooms.splice(idx, 1);
+        return;
+      }
+      this.gameRooms[idx].rightPlayer = null;
+      if (this.gameRooms[idx].props.status !== 'over') {
+        this.gameRooms[idx].props.pointLeft = 42;
+      }
+    }
   }
 }
