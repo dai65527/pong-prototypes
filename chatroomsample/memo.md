@@ -105,7 +105,7 @@ $ nest g gateway chat chat
 
 ```ts
 // this.wss.emit("chatToClient", message); // no room
-this.wss.to("message.room").emit("chatToClient", message); // to room
+this.wss.to(message.room).emit("chatToClient", message); // to room
 ```
 
 client: room に参加する
