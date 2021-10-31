@@ -1,30 +1,12 @@
 import { useEffect, useRef } from "react";
+import { GameProps } from "../types/game";
 
-// ゲームの状態を保存する型
-export type GameStatus = "left" | "right" | "on" | "over";
-
-// ゲームのターンを保存する型
-export type GameTurn = "left" | "right";
-
-// ゲームのプロパティを保存する型
-export type GameProps = {
-  // lastRenderedAt: number; // 最後にcanvasが描画された時刻
-  status: GameStatus; // ゲームの状態
-  turn: GameTurn; // ゲームのターン
-  ballX: number; // ボールのx座標
-  ballY: number; // ボールのy座標
-  barLeftY: number; // 左のバーのy座標（バー中心）
-  barRightY: number; // 右のバーのy座標（バー中心）
-  pointLeft: number; // 左側プレーヤーのポイント
-  pointRight: number; // 右側プレーヤーのポイント
-};
-
-export default function GameField({ gameProps }: { gameProps: GameProps }) {
+export default function GameField({ game }: { game: GameProps }) {
   // 描画に関する定数
-  const size = { width: 750, height: 500 }; // canvas要素のサイズ
-  const barWidth = 10; // バーの幅（y方向長さ）
-  const barHeight = 100; // バーの幅（y方向長さ）
-  const ballRadius = 10; // ボールの半径
+  const size = { width: game.sizeX, height: game.sizeY }; // canvas要素のサイズ
+  // const barHeight = 100; // バーの幅（y方向長さ）
+  const barThickness = 10; // バーの幅（y方向長さ）
+  // const ballRadius = 10; // ボールの半径
   // const velocity = 1000; // x,y方向速度の絶対値
 
   // canvas描画のメインループ
@@ -38,14 +20,14 @@ export default function GameField({ gameProps }: { gameProps: GameProps }) {
 
     // ボールの描画
     ctx.beginPath();
-    ctx.arc(gameProps.ballX, gameProps.ballY, ballRadius, 0, 2 * Math.PI);
+    ctx.arc(game.ballX, game.ballY, game.ballRadius, 0, 2 * Math.PI);
     ctx.fillStyle = "#EEE";
     ctx.fill();
     ctx.closePath();
 
     // 左側のバーの描画
     ctx.beginPath();
-    ctx.rect(5, gameProps.barLeftY - barHeight / 2, barWidth, barHeight);
+    ctx.rect(5, game.barLeftY - game.barWidth / 2, barThickness, game.barWidth);
     ctx.fillStyle = "#EEE";
     ctx.fill();
     ctx.closePath();
@@ -53,10 +35,10 @@ export default function GameField({ gameProps }: { gameProps: GameProps }) {
     // 右側のバーの描画
     ctx.beginPath();
     ctx.rect(
-      size.width - barWidth - 5,
-      gameProps.barRightY - barHeight / 2,
-      barWidth,
-      barHeight
+      size.width - barThickness - 5,
+      game.barRightY - game.barWidth / 2,
+      barThickness,
+      game.barWidth
     );
     ctx.fillStyle = "#EEE";
     ctx.fill();
@@ -75,21 +57,21 @@ export default function GameField({ gameProps }: { gameProps: GameProps }) {
     ctx.font = "32px Arial";
     ctx.textAlign = "center";
     ctx.fillStyle = "#EEE";
-    ctx.fillText(`${gameProps.pointLeft}`, size.width / 2 - 50, 50);
-    ctx.fillText(`${gameProps.pointRight}`, size.width / 2 + 50, 50);
+    ctx.fillText(`${game.pointLeft}`, size.width / 2 - 50, 50);
+    ctx.fillText(`${game.pointRight}`, size.width / 2 + 50, 50);
 
     // 勝ち負けの描画
-    if (gameProps.status === "over") {
+    if (game.status === "over") {
       ctx.fillText(
         "Win",
-        gameProps.pointLeft > gameProps.pointRight
+        game.pointLeft > game.pointRight
           ? size.width / 4
           : (size.width * 3) / 4,
         size.height / 2
       );
       ctx.fillText(
         "Lose",
-        gameProps.pointLeft > gameProps.pointRight
+        game.pointLeft > game.pointRight
           ? (size.width * 3) / 4
           : size.width / 4,
         size.height / 2
@@ -109,21 +91,7 @@ export default function GameField({ gameProps }: { gameProps: GameProps }) {
 
   return (
     <>
-      <canvas
-        {...size}
-        ref={canvasRef}
-        // onMouseMove={(e) => {
-        //   mousePosRef.current = e.clientY - canvasRef.current?.offsetTop;
-        // }}
-        // onClick={() => {
-        //   if (
-        //     gameProps.status === "left" ||
-        //     gameProps.status === "right"
-        //   ) {
-        //     gameProps.status = "on";
-        //   }
-        // }}
-      ></canvas>
+      <canvas {...size} ref={canvasRef}></canvas>
     </>
   );
 }
