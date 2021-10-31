@@ -7,7 +7,7 @@ export default function Home() {
     <>
       <NavBar>
         <Grid container direction="column" alignItems="center">
-          <Typography variant="h2" sx={{ marginBottom: 3 }}>
+          <Typography variant="h2" marginBottom={3}>
             Let's play pong
           </Typography>
           <Button variant="outlined" size="large" component={Link} to="/game">

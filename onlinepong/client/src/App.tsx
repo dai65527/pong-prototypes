@@ -1,6 +1,6 @@
 import { CssBaseline } from "@mui/material";
 import React from "react";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Game from "./pages/game";
 import Home from "./pages/home";
 import WStest from "./pages/wstest";
