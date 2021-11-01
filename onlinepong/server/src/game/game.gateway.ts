@@ -68,6 +68,11 @@ type UpdateBarPositionPayload = {
   barPosition: number;
 };
 
+type StartGamePayload = {
+  roomName: string;
+  player: User;
+};
+
 type ErrorPayload = {
   message: string;
 };
@@ -101,6 +106,7 @@ export class GameGateway {
       // join room
       if (!rooms[0].leftPlayer) rooms[0].leftPlayer = payload.player;
       else if (!rooms[0].rightPlayer) rooms[0].rightPlayer = payload.player;
+      rooms[0].props.status = 'left';
       client.join(rooms[0].name);
     } else {
       // create new room
@@ -160,7 +166,29 @@ export class GameGateway {
     if (payload.player.id === this.gameRooms[idx].leftPlayer?.id) {
       this.gameRooms[idx].props.barLeftY = payload.barPosition;
     } else if (payload.player.id === this.gameRooms[idx].rightPlayer?.id) {
-      this.gameRooms[idx].props.barLeftY = payload.barPosition;
+      this.gameRooms[idx].props.barRightY = payload.barPosition;
+    }
+  }
+
+  @SubscribeMessage('startGame')
+  handleStartGame(client: Socket, payload: StartGamePayload) {
+    const idx = this.gameRooms.findIndex(
+      (room) => room.name === payload.roomName,
+    );
+    if (
+      this.gameRooms[idx].props.status === 'left' &&
+      payload.player.id === this.gameRooms[idx].leftPlayer?.id
+    ) {
+      this.gameRooms[idx].props.status = 'on';
+      this.gameRooms[idx].props.ballSppedX = 70;
+      this.gameRooms[idx].props.ballSppedY = 70;
+    } else if (
+      this.gameRooms[idx].props.status === 'right' &&
+      payload.player.id === this.gameRooms[idx].rightPlayer?.id
+    ) {
+      this.gameRooms[idx].props.status = 'on';
+      this.gameRooms[idx].props.ballSppedX = -70;
+      this.gameRooms[idx].props.ballSppedY = 70;
     }
   }
 

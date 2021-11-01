@@ -51,6 +51,17 @@ export type GameDataToClientPayload = {
   data: GameRoom;
 };
 
+export type UpdateBarPositionPayload = {
+  roomName: string;
+  player: User;
+  barPosition: number;
+};
+
+export type StartGamePayload = {
+  roomName: string;
+  player: User;
+};
+
 export type ErrorPayload = {
   message: string;
 };

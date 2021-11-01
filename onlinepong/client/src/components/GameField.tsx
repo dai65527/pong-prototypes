@@ -4,10 +4,7 @@ import { GameProps } from "../types/game";
 export default function GameField({ game }: { game: GameProps }) {
   // 描画に関する定数
   const size = { width: game.sizeX, height: game.sizeY }; // canvas要素のサイズ
-  // const barHeight = 100; // バーの幅（y方向長さ）
   const barThickness = 10; // バーの幅（y方向長さ）
-  // const ballRadius = 10; // ボールの半径
-  // const velocity = 1000; // x,y方向速度の絶対値
 
   // canvas描画のメインループ
   const renderFrame = (ctx: CanvasRenderingContext2D) => {

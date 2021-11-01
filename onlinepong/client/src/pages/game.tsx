@@ -8,14 +8,20 @@ import {
   GameDataToClientPayload,
   GameRoom,
   JoinGamePayload,
+  StartGamePayload,
+  UpdateBarPositionPayload,
 } from "../types/game";
 import { io, Socket } from "socket.io-client";
 
-type UserState = "wait for join" | "wait for player" | "playing" | "error";
+type UserState =
+  | "wait for join"
+  | "wait for player"
+  | "playing as left"
+  | "playing as right"
+  | "error";
 
 export default function Game() {
   const [userID] = useState<number>(Math.floor(Math.random() * 100000));
-  const [mousePos, updateMousePos] = useState<number>(0);
   const [userState, updateUserState] = useState<UserState>("wait for join");
   const [game, updateGame] = useState<GameRoom>({
     id: -1,
@@ -23,6 +29,7 @@ export default function Game() {
     audience: [],
   });
   const socketRef = useRef<Socket>();
+  const mousePosRef = useRef<number>(0);
 
   useEffect(() => {
     console.log("connecting");
@@ -40,14 +47,47 @@ export default function Game() {
     socketRef?.current?.on(
       "gameDataToClient",
       (payload: GameDataToClientPayload) => {
-        updateGame(payload.data);
-        if (userState === "wait for player" || userState === "wait for join") {
-          if (payload.data.leftPlayer && payload.data.rightPlayer) {
-            updateUserState("playing");
-          } else {
-            updateUserState("wait for player");
+        if (payload.data.props?.status === "standby") {
+          updateUserState("wait for player");
+        } else if (payload.data.leftPlayer && payload.data.rightPlayer) {
+          updateUserState(
+            payload.data.leftPlayer.id === userID
+              ? "playing as left"
+              : "playing as right"
+          );
+        }
+        if (
+          payload.data.leftPlayer &&
+          payload.data.leftPlayer.id === userID &&
+          payload.data.props !== undefined
+        ) {
+          payload.data.props.barLeftY = mousePosRef.current;
+          if (payload.data.props.status === "left") {
+            payload.data.props.ballX = payload.data.props.ballRadius + 15;
+            payload.data.props.ballY = payload.data.props.barLeftY;
+          }
+        } else if (
+          payload.data.rightPlayer &&
+          payload.data.rightPlayer.id === userID &&
+          payload.data.props !== undefined
+        ) {
+          payload.data.props.barRightY = mousePosRef.current;
+          if (payload.data.props.status === "right") {
+            payload.data.props.ballX =
+              payload.data.props.sizeX - payload.data.props.ballRadius - 15;
+            payload.data.props.ballY = payload.data.props.barRightY;
           }
         }
+        const payloadBarPos: UpdateBarPositionPayload = {
+          roomName: payload.data.name,
+          player: {
+            id: userID,
+            name: `user-${userID}`,
+          },
+          barPosition: mousePosRef.current,
+        };
+        socketRef?.current?.emit("updateBarPosition", payloadBarPos);
+        updateGame(payload.data);
       }
     );
     const joinGamePayload: JoinGamePayload = {
@@ -59,12 +99,44 @@ export default function Game() {
     socketRef?.current?.emit("joinGame", joinGamePayload);
   };
 
+  const startGame = (game: GameRoom) => {
+    if (
+      game.props?.status === "left" &&
+      game.leftPlayer?.id === userID &&
+      socketRef?.current
+    ) {
+      const payload: StartGamePayload = {
+        roomName: game.name,
+        player: {
+          id: userID,
+          name: `user-${userID}`,
+        },
+      };
+      socketRef.current.emit("startGame", payload);
+    } else if (
+      game.props?.status === "right" &&
+      game.rightPlayer?.id === userID &&
+      socketRef?.current
+    ) {
+      const payload: StartGamePayload = {
+        roomName: game.name,
+        player: {
+          id: userID,
+          name: `user-${userID}`,
+        },
+      };
+      socketRef.current.emit("startGame", payload);
+    }
+  };
+
+  const isInGame = (): boolean => {
+    return userState === "playing as left" || userState === "playing as right";
+  };
+
   return (
     <div>
       <NavBar>
-        {/* <input /> */}
         <Grid container direction="column" alignItems="center">
-          <Typography>{mousePos}</Typography>
           <Typography sx={{ marginBottom: 3 }}>{userState}</Typography>
           {userState === "wait for join" && (
             <Button
@@ -80,22 +152,14 @@ export default function Game() {
           <div
             ref={gameFieldRef}
             onMouseMove={(e) => {
-              if (!gameFieldRef || !gameFieldRef.current) {
-                return;
+              if (mousePosRef && gameFieldRef && gameFieldRef.current) {
+                mousePosRef.current =
+                  e.clientY - gameFieldRef.current.offsetTop;
               }
-              updateMousePos(e.clientY - gameFieldRef.current?.offsetTop);
-              updateGame((old) => {
-                return {
-                  ...old,
-                  barLeftY: mousePos,
-                  barRightY: mousePos,
-                };
-              });
             }}
+            onClick={() => startGame(game)}
           >
-            {userState === "playing" && game.props && (
-              <GameField game={game.props} />
-            )}
+            {isInGame() && game.props && <GameField game={game.props} />}
           </div>
         </Grid>
       </NavBar>

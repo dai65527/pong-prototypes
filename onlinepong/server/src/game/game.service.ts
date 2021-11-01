@@ -12,9 +12,9 @@ export class GameService {
 
   // private logger: Logger = new Logger('TimeService');
 
-  @Interval(1000)
+  @Interval(20)
   sendGameProps() {
-    console.log(`games = ${this.gameGateway.gameRooms.length}`);
+    // console.log(`games = ${this.gameGateway.gameRooms.length}`);
     this.gameGateway.gameRooms.forEach((game) => {
       const now = Date.now();
       if (game.props.status === 'on') {
@@ -91,6 +91,12 @@ export class GameService {
             }
           }
         }
+      } else if (game.props.status === 'left') {
+        game.props.ballX = game.props.ballRadius + 15;
+        game.props.ballY = game.props.barLeftY;
+      } else if (game.props.status === 'right') {
+        game.props.ballX = game.props.sizeX - game.props.ballRadius - 15;
+        game.props.ballY = game.props.barRightY;
       }
       game.lastRenderedAt = now;
       this.gameGateway.sendGameData(game);
