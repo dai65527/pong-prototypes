@@ -3,7 +3,7 @@ import { Interval } from '@nestjs/schedule';
 import { GameGateway } from './game.gateway';
 
 const barCought = (ballY: number, barY: number, barWidth: number): boolean => {
-  return barY - barWidth / 2 >= ballY && barY + barWidth / 2 <= ballY;
+  return barY - barWidth / 2 <= ballY && barY + barWidth / 2 >= ballY;
 };
 
 @Injectable()

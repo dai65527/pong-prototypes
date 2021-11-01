@@ -180,15 +180,15 @@ export class GameGateway {
       payload.player.id === this.gameRooms[idx].leftPlayer?.id
     ) {
       this.gameRooms[idx].props.status = 'on';
-      this.gameRooms[idx].props.ballSppedX = 70;
-      this.gameRooms[idx].props.ballSppedY = 70;
+      this.gameRooms[idx].props.ballSppedX = 1;
+      this.gameRooms[idx].props.ballSppedY = 1;
     } else if (
       this.gameRooms[idx].props.status === 'right' &&
       payload.player.id === this.gameRooms[idx].rightPlayer?.id
     ) {
       this.gameRooms[idx].props.status = 'on';
-      this.gameRooms[idx].props.ballSppedX = -70;
-      this.gameRooms[idx].props.ballSppedY = 70;
+      this.gameRooms[idx].props.ballSppedX = -1;
+      this.gameRooms[idx].props.ballSppedY = 1;
     }
   }
 
